@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         listaCanciones.add(new Cancion("Cancion 4","Artista 4"));
         listaCanciones.add(new Cancion("Cancion 5","Artista 5"));
         listaCanciones.add(new Cancion("El pollito pio -","Sin Nombre"));
+        listaCanciones.add(new Cancion("highway to hell -","Sin Nombre"));
 
         //inicializamos el adaptador
         adapter = new CancionListAdapter(getApplicationContext(),listaCanciones);
