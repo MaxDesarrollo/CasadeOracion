@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "346889032076",
+    "firebase_url": "https://casa-de-oracion.firebaseio.com",
+    "project_id": "casa-de-oracion",
+    "storage_bucket": "casa-de-oracion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346889032076:android:9e6ccefcf1e642bf",
+        "android_client_info": {
+          "package_name": "com.breakstudio.casadeoracion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346889032076-u4em8gehhnpfabf5nl6j9ap0e666saog.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.breakstudio.casadeoracion",
+            "certificate_hash": "96622A116256E2202D7FF5E9744749E6609E6EFC"
+          }
+        },
+        {
+          "client_id": "346889032076-8egq4tupk21naudd9tf47tea4rn2b1do.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKgEdfAmGAkYHafKiNrU--Q-i8v4OF0SE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346889032076-8egq4tupk21naudd9tf47tea4rn2b1do.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_registro"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.breakstudio.casadeoracion.RegistroActivity">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/grayscalebg_x1"
+        android:scaleType="centerCrop"
+        android:alpha="0.2"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/txtEmailRegistro"
+        android:hint="Correo"
+        android:layout_above="@+id/txtUserRegistro"
+        android:layout_alignStart="@+id/txtUserRegistro" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/txtUserRegistro"
+        android:hint="Nombre"
+        android:layout_above="@+id/txtPasswordRegistro"
+        android:layout_centerHorizontal="true" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/txtPasswordRegistro"
+        android:hint="Contraseña"
+        android:layout_marginBottom="26dp"
+        android:layout_above="@+id/btnRegistro"
+        android:layout_alignStart="@+id/txtEmailRegistro" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="50sp"
+        android:text="Registrar"
+        android:background="#ffa500"
+        android:textColor="#FFF"
+
+        android:id="@+id/btnRegistro"
+        android:layout_marginBottom="77dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView" />
+
+
+
+
+    <ImageView
+        android:layout_width="229dp"
+        android:layout_height="200dp"
+        android:src="@drawable/manantiallogo_2x"
+        android:id="@+id/imageView"
+        android:layout_above="@+id/txtEmailRegistro"
+        android:layout_centerHorizontal="true" />
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+         />
+
+</RelativeLayout>
