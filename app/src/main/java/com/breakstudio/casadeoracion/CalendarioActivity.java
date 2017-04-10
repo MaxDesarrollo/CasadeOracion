@@ -20,6 +20,7 @@ public class CalendarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
+        obtenerDatos();
     }
 
     private  static  final String TAG = "Calendario";
