@@ -17,6 +17,6 @@ public interface PostService {
     Call<PredicaRespuesta> obtenerPredicas();
 
     @GET("get_tag_posts/?tag_slug=Predicas")
-    Call<PredicaRespuesta> obtenerCalenadario();
+    Call<CalendarioRespuesta> obtenerCalenadario();
 
 }
