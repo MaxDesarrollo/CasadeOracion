@@ -20,9 +20,12 @@ public class CalendarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://hashtag.breakstudio.co/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         obtenerDatos();
-        //cambio
-        //
+
     }
 
     private  static  final String TAG = "Calendario";

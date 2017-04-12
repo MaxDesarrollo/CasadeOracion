@@ -47,6 +47,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .load(lista.get(position).getThumbnail())
                 .centerCrop()
                 .crossFade()
+                .dontTransform()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(vh.imageView);
 

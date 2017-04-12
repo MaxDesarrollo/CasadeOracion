@@ -43,7 +43,7 @@ public class ListaCalendarioAdapter extends BaseAdapter{
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View v = View.inflate(context,R.layout.item_predica,null);
+        View v = View.inflate(context,R.layout.item_calendario,null);
         ImageView ivThumbnail = (ImageView) v.findViewById(R.id.ivThumbnail);
         TextView tvTitulo = (TextView) v.findViewById(R.id.tvTitulo);
         TextView tvTexto = (TextView) v.findViewById(R.id.tvTexto);
