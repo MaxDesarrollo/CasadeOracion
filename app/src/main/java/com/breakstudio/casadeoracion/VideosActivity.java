@@ -14,6 +14,7 @@ public class VideosActivity extends YouTubeBaseActivity implements YouTubePlayer
 
     String claveYoutube = "AIzaSyBSrqZ4W4pycsZ9IyUCz_txQ2Feu6sFaoI";
     YouTubePlayerView youTubePlayerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,12 +22,26 @@ public class VideosActivity extends YouTubeBaseActivity implements YouTubePlayer
 
         youTubePlayerView = (YouTubePlayerView)findViewById(R.id.youtube_view);
         youTubePlayerView.initialize(claveYoutube,this);
+
     }
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean fueRestaurado) {
+
+
         if(!fueRestaurado){
-            youTubePlayer.cuePlaylist("PLbGtiIo49e8iBx_uoSt3-mxdsWSc_AVOG"); //apostolMoises
+            youTubePlayer.cuePlaylist("PLbGtiIo49e8iBx_uoSt3-mxdsWSc_AVOG" );
+
+
+        }
+
+    }
+
+    public void onInitializationSuccess2(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer2, boolean fueRestaurado) {
+        if(!fueRestaurado){
+
+
+
         }
 
     }

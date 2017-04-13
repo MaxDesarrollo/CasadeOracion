@@ -6,11 +6,54 @@
     android:layout_height="match_parent"
     tools:context="com.breakstudio.casadeoracion.VideosActivity">
 
-    <com.google.android.youtube.player.YouTubePlayerView
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/youtube_view"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp" />
+
+
+   <LinearLayout
+       android:layout_width="368dp"
+       android:layout_height="wrap_content"
+       tools:layout_editor_absoluteY="0dp"
+       tools:layout_editor_absoluteX="8dp"
+       android:orientation="vertical"
+       >
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:text="Apostol Moises Rosales"
+           android:textSize="19sp"
+           android:textColor="#000"
+           android:layout_marginTop="15dp"/>
+
+       <com.google.android.youtube.player.YouTubePlayerView
+               android:layout_width="368dp"
+               android:layout_height="wrap_content"
+               android:id="@+id/youtube_view"
+               tools:layout_editor_absoluteY="0dp"
+               tools:layout_editor_absoluteX="8dp"
+               android:layout_marginTop="12dp" />
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:text="Apostol Meliton Rosales"
+           android:textColor="#000"
+           android:textSize="19sp"
+           android:paddingTop="15dp"/>
+
+       <com.google.android.youtube.player.YouTubePlayerView
+           android:layout_width="368dp"
+           android:layout_height="wrap_content"
+           android:id="@+id/youtube_view2"
+           tools:layout_editor_absoluteY="0dp"
+           tools:layout_editor_absoluteX="8dp"
+           android:layout_marginTop="12dp" />
+
+
+
+
+
+
+
+
+
+   </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
