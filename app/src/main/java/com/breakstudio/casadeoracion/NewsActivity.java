@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -149,9 +150,10 @@ public class NewsActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View v) {
                         //here
-                        startActivity(new Intent(NewsActivity.this,VideosActivity.class));
+                        //startActivity(new Intent(NewsActivity.this,Video2Activity.class));
                         // or:
                         //startActivity(new Intent(v.getContext(),VideosActivity.class));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/user/casadeoracionbolivia/videos")));
                     }
                 });
 

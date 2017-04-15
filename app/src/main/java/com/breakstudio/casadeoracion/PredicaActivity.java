@@ -20,7 +20,7 @@ public class PredicaActivity extends AppCompatActivity {
     private  static  final String TAG = "PREDICA";
     private Retrofit retrofit;
 
-    ListView lvCalendario;
+    ListView lvPredica;
     private RecyclerView recyclerView;
     private ListaPredicaAdapter listaPredicaAdapter;
 
@@ -47,10 +47,10 @@ public class PredicaActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Log.e(TAG,"onResponse: Entra");
                     PredicaRespuesta predicaRespuesta = response.body();
-                    lvCalendario = (ListView)findViewById(R.id.lvPredica);
+                    lvPredica = (ListView)findViewById(R.id.lvPredica);
                     ArrayList<Post> listaPost = predicaRespuesta.getPosts();
                     listaPredicaAdapter = new ListaPredicaAdapter(getApplicationContext(),listaPost);
-                    lvCalendario.setAdapter(listaPredicaAdapter);
+                    lvPredica.setAdapter(listaPredicaAdapter);
 
 
                 }

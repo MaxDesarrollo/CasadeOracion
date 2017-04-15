@@ -13,32 +13,34 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 /**
- * Created by Marcelo on 7/4/2017.
+ * Created by Marcelo on 15/4/2017.
  */
 
-public class ListaCalendarioAdapter extends BaseAdapter{
+public class ListaCalendarioAdapter extends BaseAdapter {
 
     private Context context;
     private List<Post> PostsLista;
 
+    //Constructor
     public ListaCalendarioAdapter(Context context, List<Post> postsLista) {
         this.context = context;
         PostsLista = postsLista;
     }
 
+
     @Override
     public int getCount() {
-        return 0;
+        return PostsLista.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Object getItem(int i) {
+        return PostsLista.get(i);
     }
 
     @Override
-    public long getItemId(int position) {
-        return 0;
+    public long getItemId(int i) {
+        return i;
     }
 
     @Override
