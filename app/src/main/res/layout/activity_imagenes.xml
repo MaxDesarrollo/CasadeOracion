@@ -6,4 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.breakstudio.casadeoracion.ImagenesActivity">
 
+    <GridView
+        android:layout_width="368dp"
+        android:layout_height="551dp"
+        android:columnWidth="120dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="auto_fit"
+        android:padding="10dp"
+        android:verticalSpacing="10dp"
+        android:id="@+id/gvGaleria">
+
+    </GridView>
 </android.support.constraint.ConstraintLayout>
