@@ -19,7 +19,7 @@ public interface PostService {
     @GET("get_tag_posts/?tag_slug=Predicas")
     Call<CalendarioRespuesta> obtenerCalendario();
 
-    @GET("get_tag_posts/?tag_slug=Predicas")
+    @GET("get_posts")
     Call<ImagenesRespuesta> obtenerImagenes();
 
 }
