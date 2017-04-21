@@ -5,37 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:fillViewport="true"
-    android:padding="5dp"
     tools:context="com.breakstudio.casadeoracion.NewsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:id="@+id/lvNews"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_height="200dp"
-            android:background="#2345"
-            />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:id="@+id/rvDestacados"
-            android:background="#FFF"
-            android:layout_above="@+id/lvNews"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="29dp">
-
-        </android.support.v7.widget.RecyclerView>
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="100dp"
             app:srcCompat="@color/backgroundRadio"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
@@ -47,28 +28,45 @@
             android:layout_height="100dp"
             app:srcCompat="@drawable/antena"
             android:id="@+id/imageView5"
+            android:layout_marginTop="25dp"
             android:layout_alignBottom="@+id/imageView4"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="13dp" />
+            android:layout_marginBottom="0dp" />
         <TextView
             android:text="DESTACADAS DE LA SEMANA"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
+            android:padding="13dp"
             android:id="@+id/textView3"
-            android:layout_above="@+id/rvDestacados"
+            android:layout_below="@+id/imageView4"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="23dp"
             android:textColor="@color/backgroundRadio" />
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/rvDestacados"
+            android:background="#FFF"
+            android:layout_below="@+id/textView3"
+            android:layout_marginTop="0dp">
+
+        </android.support.v7.widget.RecyclerView>
         <TextView
             android:text="ULTIMAS PUBLICACIONES"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="13dp"
             android:id="@+id/textView4"
             android:textColor="@color/backgroundRadio"
-            android:layout_above="@+id/lvNews"
-            android:layout_alignStart="@+id/textView3" />
+            android:layout_below="@+id/rvDestacados"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/lvNews"
+            android:layout_below="@+id/textView4"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content"
+            android:background="#2345"
+            />
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"

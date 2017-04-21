@@ -4,6 +4,7 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.breakstudio.casadeoracion.LoginActivity"
     >
     <ImageView
@@ -14,38 +15,6 @@
     android:alpha="0.5"
     />
 
-    <com.facebook.login.widget.LoginButton
-        android:layout_width="229dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/fbLoginButton"
-        android:layout_marginBottom="142dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrate con tu correo"
-        android:textColor="#FFF"
-        android:layout_alignTop="@+id/fbLoginButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="54dp"
-        android:id="@+id/btnRegistro"
-        android:onClick="IrRegistro"
-        android:background="#ffa500"
-        android:padding="20dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¿YA REGISTRADO? INGRESA AQUI"
-        android:layout_marginTop="15dp"
-        android:textColor="#FFF"
-        android:id="@+id/textView"
-        android:layout_below="@+id/btnRegistro"
-        android:layout_centerHorizontal="true"
-        android:onClick="irIniciarSecion"/>
-
     <ImageView
         android:layout_width="229dp"
         android:layout_height="200dp"
@@ -53,5 +22,41 @@
         android:id="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp" />
+
+    <com.facebook.login.widget.LoginButton
+        xmlns:fb="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content"
+        android:id="@+id/fbLoginButton"
+        android:background="@null"
+        android:layout_marginBottom="25dp"
+        android:layout_above="@+id/btnRegistro"
+        android:layout_centerHorizontal="true"
+        fb:com_facebook_login_text="@string/login_with_facebook"
+        style="@style/loginButtonStyle"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrate con tu correo"
+        android:id="@+id/btnRegistro"
+        android:onClick="IrRegistro"
+        android:background="#ffa500"
+        android:layout_marginBottom="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/textView"
+        android:layout_alignStart="@+id/fbLoginButton"
+        style="@style/loginButtonStyle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿YA REGISTRADO? INGRESA AQUI"
+        android:textColor="#FFF"
+        android:id="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:layout_centerHorizontal="true"
+        android:onClick="irIniciarSecion"/>
+
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,9 @@ public class iniciarSesion extends AppCompatActivity {
     private ProgressDialog pDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Fixes Panning when softkeyboard shows //
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        ////***************/////
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iniciar_sesion);
@@ -37,6 +41,11 @@ public class iniciarSesion extends AppCompatActivity {
         pDialog.setTitle("Un momento por favor");
         pDialog.setMessage("Iniciando sesion...");
         btnInicioSesion = (Button) findViewById(R.id.btnInicSecion);
+
+
+
+
+
         btnInicioSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

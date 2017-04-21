@@ -4,35 +4,19 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:fitsSystemWindows="true"
+    android:background="@color/backgroundRadio"
     tools:context="com.breakstudio.casadeoracion.MainActivity">
-
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/grayscalebg_x1"
         android:scaleType="centerCrop"
-        />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/backgroundRadio"
-        android:scaleType="centerCrop"
-        android:alpha="0.8"
-        android:id="@+id/imageView3"
-        android:layout_centerVertical="true"
+        android:alpha=".1"
+        android:layout_below="@+id/progress"
         android:layout_alignParentStart="true" />
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/playbutton_1x"
-        android:id="@+id/play"
 
-        android:layout_marginTop="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="#10FFFFFF" />
     <!-- background #10FFFFFF es para que la imagen tenga tranparencia -->
     <ImageView
         android:layout_width="150dp"
@@ -43,42 +27,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:onClick="Logout"/>
-
-    <android.support.v7.widget.AppCompatSeekBar
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekbarVolumen"
-        android:layout_below="@+id/play"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="71dp"
-
-        />
-
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Radio Manantial"
-        android:textColor="#FFF"
-        android:textStyle="bold"
-        android:id="@+id/textView2"
-        android:textSize="22dp"
-        android:layout_marginTop="19dp"
-        android:textAlignment="center"
-        android:layout_below="@+id/play"
-        android:layout_centerHorizontal="true" />
-   <ListView
-       android:layout_width="300dp"
-       android:layout_height="200dp"
-       android:layout_below="@id/seekbarVolumen"
-       android:layout_centerHorizontal="true"
-       android:paddingTop="20dp"
-       android:id="@+id/lvCanciones"
-       android:divider="@null"
-       android:dividerHeight="0dp"
-       >
-
-   </ListView>
-
     <ImageButton
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -90,6 +38,17 @@
         android:layout_marginLeft="-10dp"
         android:layout_above="@+id/seekbarVolumen"
         android:layout_alignStart="@+id/imageView" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/playbutton_1x"
+        android:id="@+id/play"
+        android:layout_marginTop="20dp"
+        android:background="#10FFFFFF"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
     <ProgressBar
         android:id="@+id/progress"
         android:indeterminate="true"
@@ -102,15 +61,57 @@
         android:visibility="gone">
     </ProgressBar>
 
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Radio Manantial"
+        android:textColor="#FFF"
+        android:textStyle="normal"
+        android:id="@+id/textView2"
+        android:textSize="18dp"
+        android:layout_marginTop="19dp"
+        android:textAlignment="center"
+        android:layout_below="@+id/play"
+        android:layout_centerHorizontal="true"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekbarVolumen"
+        android:layout_below="@+id/play"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="71dp"
+        />
+
+    <ListView
+       android:layout_width="250dp"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/seekbarVolumen"
+       android:layout_centerHorizontal="true"
+       android:paddingTop="25dp"
+       android:id="@+id/lvCanciones"
+       android:divider="@null"
+       android:dividerHeight="0dp"
+        android:paddingBottom="25dp"
+        android:layout_alignStart="@+id/seekbarVolumen"
+        android:layout_alignEnd="@+id/seekbarVolumen"
+       >
+
+   </ListView>
+
+
+
 
     <Button
         android:text="Noticias y predicas"
-        android:layout_width="500dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/btnIrNews"
         android:onClick="goNews"
         android:textColor="#FFF"
         android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:background="@drawable/button_bg_transparent"
         android:drawableLeft="@drawable/casalogowhite_1x"
         android:paddingLeft="20dp"
