@@ -56,7 +56,7 @@
         <activity android:name=".VideosActivity" />
         <activity android:name=".PredicaActivity" />
         <activity android:name=".Video2Activity" />
-        <activity android:name=".CalendarioActivity"></activity>
+        <activity android:name=".CalendarioActivity" />
     </application>
 
 </manifest>
