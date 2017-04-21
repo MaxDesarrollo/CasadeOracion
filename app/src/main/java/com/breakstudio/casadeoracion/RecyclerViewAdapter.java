@@ -17,6 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
+import static com.breakstudio.casadeoracion.R.styleable.RecyclerView;
+
 /**
  * Created by Jaime on 14/3/2017.
  */
