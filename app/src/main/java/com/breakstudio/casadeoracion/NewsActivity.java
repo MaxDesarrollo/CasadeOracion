@@ -1,5 +1,6 @@
 package com.breakstudio.casadeoracion;
 
+import android.app.ActionBar;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,13 +16,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,11 +56,15 @@ public class NewsActivity extends AppCompatActivity{
     private static final String TAG = "RespuestaWP";
     private Retrofit retrofit;
     ListView lvPost;
-    private List<Post> listaPosts;
+    //private List<Post> listaPosts;
     private PostListAdapter adapter;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter rvAdapter;
+    private ListView lvpost;
+    private ScrollView scrollView;
+
+
 
 
     @Override
@@ -68,6 +76,10 @@ public class NewsActivity extends AppCompatActivity{
         recyclerView = (RecyclerView) findViewById(R.id.rvDestacados);
         layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
+        lvPost = (ListView) findViewById(R.id.lvNews);
+        //lvPost.setScrollContainer(false);
+
+
 
 
         retrofit = new Retrofit.Builder()
@@ -217,6 +229,7 @@ public class NewsActivity extends AppCompatActivity{
             }
         });
     }
+
 
 
 
