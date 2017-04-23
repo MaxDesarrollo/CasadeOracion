@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -19,12 +20,18 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.util.DisplayMetrics;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,9 +76,16 @@ public class NewsActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setStatusBarTranslucent(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
+        //Configura el color del statusbar onCreate
+        Window window = NewsActivity.this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(Color.parseColor("#1e8bb3"));
+        ////////////////////
 
         recyclerView = (RecyclerView) findViewById(R.id.rvDestacados);
         layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
@@ -199,38 +213,60 @@ public class NewsActivity extends AppCompatActivity{
 
 
 
-            private void obtenerDatos() {
-        PostService service = retrofit.create(PostService.class);
-        Call<PostRespuesta> postRespuestaCall = service.obtenerListadePosts();
+        private void obtenerDatos() {
+            PostService service = retrofit.create(PostService.class);
+            Call<PostRespuesta> postRespuestaCall = service.obtenerListadePosts();
 
 
 
-        postRespuestaCall.enqueue(new Callback<PostRespuesta>() {
-            @Override
-            public void onResponse(Call<PostRespuesta> call, retrofit2.Response<PostRespuesta> response) {
-                if(response.isSuccessful()){
-                    lvPost = (ListView)findViewById(R.id.lvNews);
-                    PostRespuesta postRespuesta = response.body();
-                    ArrayList<Post> listaPosts = postRespuesta.getPosts();
-                    rvAdapter = new RecyclerViewAdapter(getApplicationContext(),listaPosts);
-                    recyclerView.setAdapter(rvAdapter);
-                    adapter = new PostListAdapter(getApplicationContext(),listaPosts);
-                    lvPost.setAdapter(adapter);
+            postRespuestaCall.enqueue(new Callback<PostRespuesta>() {
+                @Override
+                public void onResponse(Call<PostRespuesta> call, retrofit2.Response<PostRespuesta> response) {
+                    if(response.isSuccessful()){
+                        lvPost = (ListView)findViewById(R.id.lvNews);
+                        PostRespuesta postRespuesta = response.body();
+                        ArrayList<Post> listaPosts = postRespuesta.getPosts();
+                        rvAdapter = new RecyclerViewAdapter(getApplicationContext(),listaPosts);
+                        recyclerView.setAdapter(rvAdapter);
+                        adapter = new PostListAdapter(getApplicationContext(),listaPosts);
+                        lvPost.setAdapter(adapter);
 
+                        //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
+                        LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
+                        //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
+                        lp.height = listaPosts.size()*dpToPx(110);
+                        //Aplica el nuevo layout del Listview
+                        lvPost.setLayoutParams(lp);
 
-                }else{
-                    Log.e(TAG,"onResponse "+response.errorBody());
+                    }else{
+                        Log.e(TAG,"onResponse "+response.errorBody());
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PostRespuesta> call, Throwable t) {
+                @Override
+                public void onFailure(Call<PostRespuesta> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
+        public int pxToDp(int px) {
+            float density = NewsActivity.this.getResources()
+                    .getDisplayMetrics()
+                    .density;
+            return Math.round((float) px / density);
+        }
+        public int dpToPx(int dp) {
+            float density = NewsActivity.this.getResources()
+                    .getDisplayMetrics()
+                    .density;
+            return Math.round((float) dp * density);
+        }
+
+    protected void setStatusBarTranslucent(boolean makeTranslucent) {
+        if (makeTranslucent) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
-
-
-
-
 }

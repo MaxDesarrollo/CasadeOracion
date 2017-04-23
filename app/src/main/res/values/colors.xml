@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="backgroundRadio">#1e8bb3</color>
+    <color name="textoObscuro">#5b5b5b</color>
     <color name="fabBack">#0078a0</color>
     <color name="fabMenu">#ffffff</color>
+
+    <color name="lighterGray">#f5f5f5</color>
+    <color name="lightGray">#efefef</color>
+    <color name="placeholderGray">#dcdcdc</color>
 </resources>

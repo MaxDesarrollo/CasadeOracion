@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.graphics.Color;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -48,6 +49,13 @@ public class PostListAdapter extends BaseAdapter {
         TextView tvTitulo = (TextView) v.findViewById(R.id.tvTitulo);
         TextView tvTexto = (TextView) v.findViewById(R.id.tvTexto);
         tvTitulo.setText(PostsLista.get(i).getTitle());
+
+        //Intercalar el color de fondo de los items
+        if (i % 2 == 1) {
+            v.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            v.setBackgroundColor(Color.parseColor("#efefef"));
+        }
         Glide.with(context)
                 .load(PostsLista.get(i).getThumbnail())
                 .fitCenter()
