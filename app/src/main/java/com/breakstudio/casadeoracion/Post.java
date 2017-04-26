@@ -42,4 +42,6 @@ public class Post {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
+
+
 }

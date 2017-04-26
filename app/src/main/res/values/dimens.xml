@@ -9,6 +9,7 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="espacio_grilla">1dp</dimen>
 
     <dimen name="meta_padding">8dp</dimen>
     <dimen name="meta_icon_size">11dp</dimen>

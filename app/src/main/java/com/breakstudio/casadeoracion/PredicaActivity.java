@@ -37,7 +37,7 @@ public class PredicaActivity extends AppCompatActivity {
         obtenerDatos();
     }
 
-    private void obtenerDatos() {
+    public void obtenerDatos() {
 
         PostService service = retrofit.create(PostService.class);
         Call<PredicaRespuesta> predicaRespuestaCall = service.obtenerPredicas();
@@ -47,7 +47,7 @@ public class PredicaActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Log.e(TAG,"onResponse: Entra");
                     PredicaRespuesta predicaRespuesta = response.body();
-                    lvPredica = (ListView)findViewById(R.id.lvPredica);
+                    lvPredica = (ListView)findViewById(R.id.lvPredica1);
                     ArrayList<Post> listaPost = predicaRespuesta.getPosts();
                     listaPredicaAdapter = new ListaPredicaAdapter(getApplicationContext(),listaPost);
                     lvPredica.setAdapter(listaPredicaAdapter);

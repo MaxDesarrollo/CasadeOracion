@@ -50,6 +50,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -62,15 +63,26 @@ public class NewsActivity extends AppCompatActivity{
 
     private static final String TAG = "RespuestaWP";
     private Retrofit retrofit;
-    ListView lvPost;
+    ListView lvPost,lvPredica;
+    TextView textView4;
     //private List<Post> listaPosts;
     private PostListAdapter adapter;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter rvAdapter;
-    private ListView lvpost;
-    private ScrollView scrollView;
+    //private ListView lvpost;
+    //private PredicaActivity predica;
 
+    private  static  final String TAG2 = "PREDICA";
+    //private Retrofit retrofit;
+
+    //ListView lvPredica;
+    //private RecyclerView recyclerView;
+    private ListaPredicaAdapter listaPredicaAdapter;
+
+    //ListView lvPredica;
+    //private RecyclerView recyclerView;
+    //private ListaPredicaAdapter listaPredicaAdapter;
 
 
 
@@ -91,6 +103,9 @@ public class NewsActivity extends AppCompatActivity{
         layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
         lvPost = (ListView) findViewById(R.id.lvNews);
+        lvPredica = (ListView) findViewById(R.id.lvPredica1);
+        textView4 = (TextView) findViewById(R.id.textView4);
+        lvPredica.setVisibility(View.GONE);
         //lvPost.setScrollContainer(false);
 
 
@@ -101,6 +116,10 @@ public class NewsActivity extends AppCompatActivity{
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         obtenerDatos();
+        obtenerPredicas();
+
+
+
 
         fab_menu = (FloatingActionButton)findViewById(R.id.fab_menu);
         fab_imagenes = (FloatingActionButton) findViewById(R.id.fab_imagenes);
@@ -159,6 +178,7 @@ public class NewsActivity extends AppCompatActivity{
                         startActivity(new Intent(NewsActivity.this,newsFloatActivity.class));
                         // or:
                         //startActivity(new Intent(v.getContext(),newsFloatActivity.class));
+
                     }
                 });
 
@@ -166,9 +186,14 @@ public class NewsActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View v) {
                         //here
-                        startActivity(new Intent(NewsActivity.this,PredicaActivity.class));
+                        //startActivity(new Intent(NewsActivity.this,PredicaActivity.class));
                         // or:
                         //startActivity(new Intent(v.getContext(),PredicaActivity.class));
+                       lvPost.setVisibility(View.GONE);
+                        lvPredica.setVisibility(View.VISIBLE);
+                        textView4.setText("PREDICAS");
+                        //predica.obtenerDatos();
+
                     }
                 });
 
@@ -216,9 +241,6 @@ public class NewsActivity extends AppCompatActivity{
         private void obtenerDatos() {
             PostService service = retrofit.create(PostService.class);
             Call<PostRespuesta> postRespuestaCall = service.obtenerListadePosts();
-
-
-
             postRespuestaCall.enqueue(new Callback<PostRespuesta>() {
                 @Override
                 public void onResponse(Call<PostRespuesta> call, retrofit2.Response<PostRespuesta> response) {
@@ -249,6 +271,34 @@ public class NewsActivity extends AppCompatActivity{
                 }
             });
         }
+
+        private  void obtenerPredicas(){
+            PostService service = retrofit.create(PostService.class);
+            Call<PredicaRespuesta> predicaRespuestaCall = service.obtenerPredicas();
+            predicaRespuestaCall.enqueue(new Callback<PredicaRespuesta>() {
+                @Override
+                public void onResponse(Call<PredicaRespuesta> call, Response<PredicaRespuesta> response) {
+                    if(response.isSuccessful()){
+                        Log.e(TAG2,"onResponse : Entra Predica");
+                        PredicaRespuesta predicaRespuesta = response.body();
+                        lvPredica = (ListView) findViewById(R.id.lvPredica1);
+                        ArrayList<Post> listaPost = predicaRespuesta.getPosts();
+                        listaPredicaAdapter = new ListaPredicaAdapter(getApplicationContext(),listaPost);
+                        lvPredica.setAdapter(listaPredicaAdapter);
+                    }
+                    else {
+                        Log.e(TAG,"onResponse: "+response.errorBody());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PredicaRespuesta> call, Throwable t) {
+                    Log.e(TAG,"onFailure: "+ t.getMessage());
+                }
+            });
+        }
+
+
         public int pxToDp(int px) {
             float density = NewsActivity.this.getResources()
                     .getDisplayMetrics()
