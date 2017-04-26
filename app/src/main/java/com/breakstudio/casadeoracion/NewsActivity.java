@@ -111,10 +111,20 @@ public class NewsActivity extends AppCompatActivity{
 
 
 
+       /*retrofit = new Retrofit.Builder()
+                .baseUrl("http://hashtag.breakstudio.co/wp-json/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        getArrayPost();*/
+
+       //UrlBase
+       //http://hashtag.breakstudio.co/api/
+
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://hashtag.breakstudio.co/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        //getArrayPost();
         obtenerDatos();
         obtenerPredicas();
 
@@ -189,9 +199,16 @@ public class NewsActivity extends AppCompatActivity{
                         //startActivity(new Intent(NewsActivity.this,PredicaActivity.class));
                         // or:
                         //startActivity(new Intent(v.getContext(),PredicaActivity.class));
-                       lvPost.setVisibility(View.GONE);
-                        lvPredica.setVisibility(View.VISIBLE);
-                        textView4.setText("PREDICAS");
+                        if (lvPost.getVisibility() == View.VISIBLE ){
+                            lvPost.setVisibility(View.GONE);
+                            lvPredica.setVisibility(View.VISIBLE);
+                            textView4.setText("PREDICAS");
+                        }else if (lvPost.getVisibility() == View.GONE){
+                            lvPost.setVisibility(View.VISIBLE);
+                            lvPredica.setVisibility(View.GONE);
+                            textView4.setText("ULTIMAS PUBLICACIONES");
+                        }
+
                         //predica.obtenerDatos();
 
                     }
@@ -299,6 +316,28 @@ public class NewsActivity extends AppCompatActivity{
         }
 
 
+
+        private void getArrayPost(){
+           /* retrofit = new Retrofit.Builder()
+                    .baseUrl("http://hashtag.breakstudio.co/wp-json")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();*/
+            PostServiceArray service = retrofit.create(PostServiceArray.class);
+            Call<List<Post>> call = service.getPost();
+            call.enqueue(new Callback<List<Post>>() {
+                @Override
+                public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                    Log.d("onRespnse",response.body().toString());
+                }
+
+                @Override
+                public void onFailure(Call<List<Post>> call, Throwable t) {
+
+                    Log.d("onFailure",t.toString());
+                }
+            });
+
+        }
         public int pxToDp(int px) {
             float density = NewsActivity.this.getResources()
                     .getDisplayMetrics()

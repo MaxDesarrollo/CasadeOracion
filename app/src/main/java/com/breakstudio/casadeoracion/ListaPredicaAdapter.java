@@ -1,6 +1,7 @@
 package com.breakstudio.casadeoracion;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -48,10 +49,19 @@ public class ListaPredicaAdapter extends BaseAdapter {
         TextView tvTitulo = (TextView) v.findViewById(R.id.tvTitulo);
         TextView tvTexto = (TextView) v.findViewById(R.id.tvTexto);
         tvTitulo.setText(PostsLista.get(i).getTitle());
+
+        //Intercalar el color de fondo de los items
+        if (i % 2 == 1) {
+            v.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            v.setBackgroundColor(Color.parseColor("#efefef"));
+        }
         Glide.with(context)
                 .load(PostsLista.get(i).getThumbnail())
                 .fitCenter()
                 .crossFade()
+                .dontAnimate()
+                .dontTransform()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(ivThumbnail);
         //tvTexto.setText(PostsLista.get(i).getThumbnail());
