@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +39,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -70,6 +74,7 @@ public class NewsActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter rvAdapter;
+    private TextView tvNombreUsuario;
     //private ListView lvpost;
     //private PredicaActivity predica;
 
@@ -86,6 +91,7 @@ public class NewsActivity extends AppCompatActivity{
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setStatusBarTranslucent(true);
@@ -99,6 +105,13 @@ public class NewsActivity extends AppCompatActivity{
         window.setStatusBarColor(Color.parseColor("#1e8bb3"));
         ////////////////////
 
+        //Obtener nombre de usuario de firebase
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String name = user.getDisplayName();
+            tvNombreUsuario = (TextView)findViewById(R.id.NombreUsuariotv);
+            tvNombreUsuario.setText(name);
+        }
         recyclerView = (RecyclerView) findViewById(R.id.rvDestacados);
         layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
@@ -264,7 +277,7 @@ public class NewsActivity extends AppCompatActivity{
                     if(response.isSuccessful()){
                         lvPost = (ListView)findViewById(R.id.lvNews);
                         PostRespuesta postRespuesta = response.body();
-                        ArrayList<Post> listaPosts = postRespuesta.getPosts();
+                        List<Post> listaPosts = postRespuesta.getPosts();
                         rvAdapter = new RecyclerViewAdapter(getApplicationContext(),listaPosts);
                         recyclerView.setAdapter(rvAdapter);
                         adapter = new PostListAdapter(getApplicationContext(),listaPosts);

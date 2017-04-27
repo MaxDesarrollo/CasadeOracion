@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +58,19 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(Color.parseColor("#1e8bb3"));
         ////////////////////////////
 
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null || (AccessToken.getCurrentAccessToken()!=null) ) {
+                    Log.d("Conchudo","EL nombre es:"+user.getDisplayName());
+                } else {
+                    goLoginScreen();
+
+                }
+                // ...
+            }
+        };
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pDialog = new ProgressDialog(this);
@@ -114,19 +128,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null || (AccessToken.getCurrentAccessToken()!=null) ) {
 
-                } else {
-                    goLoginScreen();
-
-                }
-                // ...
-            }
-        };
         //Play a la radio
         playBtn = (ImageButton)findViewById(R.id.play);
         playBtn.setOnClickListener(new View.OnClickListener() {

@@ -112,10 +112,18 @@ public class RegistroActivity extends AppCompatActivity {
 
 
                         }else{
-                            createNewUser(task.getResult().getUser());
-
+                            FirebaseUser Usuario = task.getResult().getUser();
+                            createNewUser(Usuario);
+                            if(Usuario.getDisplayName()!=null){
                             Toast.makeText(RegistroActivity.this,"Bienvenido ",Toast.LENGTH_SHORT).show();
                             goMainActivity();
+                            }else {
+                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(txtUserRegistro.getText().toString())
+                                        .build();
+                                Usuario.updateProfile(profileUpdate);
+                                goMainActivity();
+                            }
                         }
                     }
                 });
@@ -129,7 +137,6 @@ public class RegistroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Log.d(TAG, "User profile updated.");
                 }
             }
         });
