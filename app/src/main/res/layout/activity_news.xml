@@ -74,15 +74,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/header_container"
+                android:minHeight="100dp"
+                android:background="@color/backgroundRadio"
                 android:gravity="top">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:background="@color/backgroundRadio"
-                    android:id="@+id/imageView4"
-                    android:contentDescription="Cabecera"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -92,32 +86,35 @@
                     android:layout_centerVertical="true"
                     android:adjustViewBounds="true"
                     android:background="@android:color/transparent"
-                    android:scaleType="centerCrop"
+                    android:scaleType="centerInside"
                     android:src="@drawable/antena"
                     />
-
-                <TextView
-                    android:id="@+id/bienvenido"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Bienvenido"
-                    android:textColor="#FFF"
-                    android:layout_alignBottom="@+id/imageView5"
-                    android:layout_toStartOf="@+id/imageView5"
-                    android:layout_marginEnd="19dp"
-                    android:layout_marginBottom="11dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_below="@+id/imageView5">
+                    <TextView
+                        android:id="@+id/bienvenido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Buen día"
+                        android:textColor="#FFF"
+                        android:layout_below="@+id/imageView5"/>
 
-                <TextView
-                    android:id="@+id/NombreUsuariotv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ramon"
-                    android:textAlignment="center"
-                    android:textColor="#FFF"
-                    android:layout_alignBaseline="@+id/bienvenido"
-                    android:layout_alignBottom="@+id/bienvenido"
-                    android:layout_toEndOf="@+id/imageView5"
-                    android:layout_marginStart="17dp" />
+                    <TextView
+                        android:id="@+id/NombreUsuariotv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ramon"
+                        android:textAlignment="center"
+                        android:textColor="#FFF"
+                        android:layout_marginStart="5dp"
+                        android:layout_alignEnd="@+id/bienvenido"
+                        android:layout_below="@+id/imageView5"/>
+                </LinearLayout>
+
             </RelativeLayout>
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_menu"
