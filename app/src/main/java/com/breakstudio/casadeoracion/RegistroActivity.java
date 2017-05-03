@@ -35,6 +35,7 @@ public class RegistroActivity extends AppCompatActivity {
     EditText txtUserRegistro;
     EditText txtPasswordRegistro;
     Button btnRegistro;
+    private String name;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     //public ProgressBar pbar;
@@ -130,16 +131,23 @@ public class RegistroActivity extends AppCompatActivity {
 
     }
     private void createNewUser(final FirebaseUser user) {
-        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                .setDisplayName(txtUserRegistro.getText().toString())
+        //FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+        name = txtUserRegistro.getText().toString();
+        UserProfileChangeRequest addProfileName = new UserProfileChangeRequest.Builder()
+                .setDisplayName(name)
                 .build();
-        user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                }
-            }
-        });
+
+        user.updateProfile(addProfileName)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, user.getDisplayName());
+                        }
+                    }
+
+                });
     }
     public void goMainActivity() {
         Intent intent = new Intent(this,MainActivity.class);

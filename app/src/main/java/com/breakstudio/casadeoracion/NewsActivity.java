@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -75,6 +76,9 @@ public class NewsActivity extends AppCompatActivity{
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter rvAdapter;
     private TextView tvNombreUsuario;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+
     //private ListView lvpost;
     //private PredicaActivity predica;
 
@@ -109,6 +113,7 @@ public class NewsActivity extends AppCompatActivity{
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String name = user.getDisplayName();
+            String email = user.getEmail();
             tvNombreUsuario = (TextView)findViewById(R.id.NombreUsuariotv);
             tvNombreUsuario.setText(name);
         }
@@ -140,6 +145,11 @@ public class NewsActivity extends AppCompatActivity{
         //getArrayPost();
         obtenerDatos();
         obtenerPredicas();
+
+
+
+
+
 
 
 
