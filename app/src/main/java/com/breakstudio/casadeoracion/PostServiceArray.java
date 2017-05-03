@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 
 public interface PostServiceArray {
 
-    @GET("/wp/v2/posts")
+    @GET("wp/v2/posts?app=true")
     Call<List<Post>> getPost();
 }
 

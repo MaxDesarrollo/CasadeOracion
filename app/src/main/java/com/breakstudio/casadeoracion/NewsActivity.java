@@ -52,6 +52,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,6 +69,7 @@ public class NewsActivity extends AppCompatActivity{
 
     private static final String TAG = "RespuestaWP";
     private Retrofit retrofit;
+    private Retrofit retrofit2;
     ListView lvPost,lvPredica;
     TextView textView4;
     //private List<Post> listaPosts;
@@ -122,9 +125,7 @@ public class NewsActivity extends AppCompatActivity{
         //lvPost.setScrollContainer(false);
 
 
-
-
-       /*retrofit = new Retrofit.Builder()
+        /*retrofit = new Retrofit.Builder()
                 .baseUrl("http://hashtag.breakstudio.co/wp-json/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -137,7 +138,7 @@ public class NewsActivity extends AppCompatActivity{
                 .baseUrl("http://hashtag.breakstudio.co/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        //getArrayPost();
+        getArrayPost();
         obtenerDatos();
         obtenerPredicas();
 
@@ -158,8 +159,6 @@ public class NewsActivity extends AppCompatActivity{
         fab_menu.setOnClickListener(new View.OnClickListener(){
             @Override
             public  void  onClick(View v){
-
-
                 if(isOpen)
                 {
                     fab_predicas.startAnimation(FabClose);
@@ -174,7 +173,6 @@ public class NewsActivity extends AppCompatActivity{
                     fab_noticias.setClickable(false);
                     fab_menu.setVisibility(View.VISIBLE);
                     isOpen = false;
-
                 }
                 else
                 {
@@ -331,22 +329,29 @@ public class NewsActivity extends AppCompatActivity{
 
 
         private void getArrayPost(){
-           /* retrofit = new Retrofit.Builder()
-                    .baseUrl("http://hashtag.breakstudio.co/wp-json")
+            //HTTP LOGGER IGNORE - Freddy
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            httpClient.addInterceptor(logging);
+            /////END OF LOGGER - .client(httpClient.build()) initiates the logger in the request
+
+           retrofit2 = new Retrofit.Builder()
+                    .baseUrl("http://hashtag.breakstudio.co/wp-json/")
                     .addConverterFactory(GsonConverterFactory.create())
-                    .build();*/
-            PostServiceArray service = retrofit.create(PostServiceArray.class);
+                    .client(httpClient.build())
+                    .build();
+            PostServiceArray service = retrofit2.create(PostServiceArray.class);
             Call<List<Post>> call = service.getPost();
             call.enqueue(new Callback<List<Post>>() {
                 @Override
                 public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                    Log.d("onRespnse",response.body().toString());
+                    Log.d("onResponseArray",response.body().toString());
                 }
 
                 @Override
                 public void onFailure(Call<List<Post>> call, Throwable t) {
-
-                    Log.d("onFailure",t.toString());
+                    Log.d("onFailureArray",t.toString());
                 }
             });
 
