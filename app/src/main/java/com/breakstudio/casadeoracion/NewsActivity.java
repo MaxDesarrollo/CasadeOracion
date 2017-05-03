@@ -345,6 +345,7 @@ public class NewsActivity extends AppCompatActivity{
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             httpClient.addInterceptor(logging);
             /////END OF LOGGER - .client(httpClient.build()) initiates the logger in the request
+            //Hola :)
 
            retrofit2 = new Retrofit.Builder()
                     .baseUrl("http://hashtag.breakstudio.co/wp-json/")
