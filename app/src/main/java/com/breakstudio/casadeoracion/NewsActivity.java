@@ -140,10 +140,10 @@ public class NewsActivity extends AppCompatActivity{
        //http://hashtag.breakstudio.co/api/
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://hashtag.breakstudio.co/api/")
+                .baseUrl("http://hashtag.breakstudio.co/wp-json/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        getArrayPost();
+        ///getArrayPost();
         obtenerDatos();
         obtenerPredicas();
 
@@ -277,37 +277,63 @@ public class NewsActivity extends AppCompatActivity{
 
 
         private void obtenerDatos() {
-            PostService service = retrofit.create(PostService.class);
-            Call<PostRespuesta> postRespuestaCall = service.obtenerListadePosts();
+      /*      PostService service = retrofit.create(PostService.class);
+            Call<PostRespuesta> postRespuestaCall = service.getPost();
             postRespuestaCall.enqueue(new Callback<PostRespuesta>() {
                 @Override
                 public void onResponse(Call<PostRespuesta> call, retrofit2.Response<PostRespuesta> response) {
                     if(response.isSuccessful()){
                         lvPost = (ListView)findViewById(R.id.lvNews);
                         PostRespuesta postRespuesta = response.body();
-                        List<Post> listaPosts = postRespuesta.getPosts();
-                        rvAdapter = new RecyclerViewAdapter(getApplicationContext(),listaPosts);
+                        PostRespuesta listaPosts = (PostRespuesta) postRespuesta.getPosts();
+                        rvAdapter = new RecyclerViewAdapter(getApplicationContext(), (List<Post>) listaPosts);
                         recyclerView.setAdapter(rvAdapter);
-                        adapter = new PostListAdapter(getApplicationContext(),listaPosts);
+                        adapter = new PostListAdapter(getApplicationContext(),(List<Post>) listaPosts);
                         lvPost.setAdapter(adapter);
 
                         //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
-                        LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
+                        //LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
                         //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
-                        lp.height = listaPosts.size()*dpToPx(110);
+                        //lp.height = listaPosts.size()*dpToPx(110);
                         //Aplica el nuevo layout del Listview
-                        lvPost.setLayoutParams(lp);
+                        //lvPost.setLayoutParams(lp);
 
                     }else{
-                        Log.e(TAG,"onResponse "+response.errorBody());
+                        Log.e(TAG,"onResponse Error"+response.errorBody());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<PostRespuesta> call, Throwable t) {
+                    Log.e(TAG,"onResponse Error"+t.getCause());
+                }
+            });*/
+      PostService service = retrofit.create(PostService.class);
+            Call<List<Post>> Call = service.getPost();
+            Call.enqueue(new Callback<List<Post>>() {
+                @Override
+                public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                    List<Post> respuesta = response.body();
+                    Log.e(TAG,"TodoBien"+ respuesta.toString());
+                    rvAdapter = new RecyclerViewAdapter(getApplicationContext(), respuesta);
+                    recyclerView.setAdapter(rvAdapter);
+                    adapter = new PostListAdapter(getApplicationContext(),respuesta);
+                    lvPost.setAdapter(adapter);
 
+                    //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
+                    LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
+                    //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
+                    lp.height = respuesta.size()*dpToPx(110);
+                    //Aplica el nuevo layout del Listview
+                    lvPost.setLayoutParams(lp);
+                }
+
+                @Override
+                public void onFailure(Call<List<Post>> call, Throwable t) {
+                    Log.e(TAG,"TodoMal: "+ t.getCause());
                 }
             });
+
         }
 
         private  void obtenerPredicas(){

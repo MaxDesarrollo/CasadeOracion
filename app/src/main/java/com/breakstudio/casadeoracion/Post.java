@@ -1,12 +1,19 @@
 package com.breakstudio.casadeoracion;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by Jaime on 10/3/2017.
  */
 
-public class Post {
+public class Post implements Serializable {
+    @SerializedName("id")
     private String id;
+    @SerializedName("title")
     private String title;
+    @SerializedName("featured_image_url")
     private String thumbnail;//url
 
     public String getContent() {

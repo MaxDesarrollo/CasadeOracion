@@ -1,6 +1,9 @@
 package com.breakstudio.casadeoracion;
 
+import java.util.List;
+
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.http.GET;
 
 /**
@@ -8,6 +11,8 @@ import retrofit2.http.GET;
  */
 
 public interface PostService {
+    @GET("wp/v2/posts?app=true")
+    Call<List<Post>> getPost();
     @GET("get_posts")
     Call<PostRespuesta> obtenerListadePosts();
     @GET("get_category_posts")
