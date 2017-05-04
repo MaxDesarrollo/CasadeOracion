@@ -50,6 +50,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +74,7 @@ public class NewsActivity extends AppCompatActivity{
     private Retrofit retrofit;
     private Retrofit retrofit2;
     ListView lvPost,lvPredica;
-    TextView textView4;
+    TextView textView4,bienvenido;
     //private List<Post> listaPosts;
     private PostListAdapter adapter;
     private RecyclerView recyclerView;
@@ -127,7 +129,9 @@ public class NewsActivity extends AppCompatActivity{
         lvPredica = (ListView) findViewById(R.id.lvPredica1);
         textView4 = (TextView) findViewById(R.id.textView4);
         lvPredica.setVisibility(View.GONE);
+        bienvenido = (TextView) findViewById(R.id.bienvenido);
         //lvPost.setScrollContainer(false);
+        obtenerHora();
 
 
         /*retrofit = new Retrofit.Builder()
@@ -371,7 +375,6 @@ public class NewsActivity extends AppCompatActivity{
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             httpClient.addInterceptor(logging);
             /////END OF LOGGER - .client(httpClient.build()) initiates the logger in the request
-            //Hola :)
 
            retrofit2 = new Retrofit.Builder()
                     .baseUrl("http://hashtag.breakstudio.co/wp-json/")
@@ -412,5 +415,32 @@ public class NewsActivity extends AppCompatActivity{
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+    }
+
+    public  void obtenerHora(){
+        Calendar calendar = new GregorianCalendar();
+        int hora = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+        String hour = String.valueOf(hora);
+        int tardeInicio = 13;
+        //int min = 01;
+        int tardeFin = 18;
+        int nocheFin = 24;
+
+
+        //bienvenido.setText(hour);
+        if(hora >= tardeInicio  && hora < tardeFin ){
+            bienvenido.setText("Buenas Tardes ");
+            //Log.d("Saludo",bienvenido.getText().toString());
+
+        }else  if (hora >= tardeFin && hora < nocheFin ){
+            bienvenido.setText("Buenas Noches ");
+        }else if (hora >= nocheFin  && hora < tardeInicio ){
+            bienvenido.setText("Buenos Dias");
+        }
+
+
+
+
     }
 }
