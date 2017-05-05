@@ -15,6 +15,15 @@ public class Post implements Serializable {
     private String title;
     @SerializedName("featured_image_url")
     private String thumbnail;//url
+    @SerializedName("comment_count")
+    private Integer cant_comentarios;
+    @SerializedName("date")
+    private String fecha;
+
+    public Integer getCant_comentarios() {return cant_comentarios;}
+
+    public void setCant_comentarios(Integer cant_comentarios) { this.cant_comentarios = cant_comentarios;}
+
 
     public String getContent() {
         return content;
@@ -51,4 +60,7 @@ public class Post implements Serializable {
     }
 
 
+    public String getFecha() {return fecha;}
+
+    public void setFecha(String fecha) {this.fecha = fecha;}
 }

@@ -11,7 +11,11 @@ import android.graphics.Color;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Jaime on 10/3/2017.
@@ -47,8 +51,13 @@ public class PostListAdapter extends BaseAdapter {
         View v = View.inflate(context,R.layout.news_item,null);
         ImageView ivThumbnail = (ImageView) v.findViewById(R.id.ivThumbnail);
         TextView tvTitulo = (TextView) v.findViewById(R.id.tvTitulo);
+        TextView tvFecha = (TextView) v.findViewById(R.id.fechaLista);
         TextView tvTexto = (TextView) v.findViewById(R.id.tvTexto);
+        TextView tvComentarios = (TextView) v.findViewById(R.id.comentariosLista);
+        tvComentarios.setText(String.valueOf(PostsLista.get(i).getCant_comentarios()));
         tvTitulo.setText(PostsLista.get(i).getTitle());
+        //formatear fecha
+
 
         //Intercalar el color de fondo de los items
         if (i % 2 == 1) {

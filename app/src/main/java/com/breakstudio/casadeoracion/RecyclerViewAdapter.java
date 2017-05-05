@@ -46,6 +46,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         vh.textView.setText(lista.get(position).getTitle());
+        vh.destacadoComentarios.setText(String.valueOf(lista.get(position).getCant_comentarios()));
+
         Glide.with(context)
                 .load(lista.get(position).getThumbnail())
                 .centerCrop()
@@ -79,11 +81,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView;
         ImageView imageView;
+        TextView  destacadoComentarios;
         ItemCLickListener itemCLickListener;
         public ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.tvDestacado);
             imageView = (ImageView) itemView.findViewById(R.id.ivDestacado);
+            destacadoComentarios = (TextView) itemView.findViewById(R.id.destacadoComentarios);
             itemView.setOnClickListener(this);
 
         }
