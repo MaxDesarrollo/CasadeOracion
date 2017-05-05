@@ -56,6 +56,7 @@ public class PostListAdapter extends BaseAdapter {
         TextView tvComentarios = (TextView) v.findViewById(R.id.comentariosLista);
         tvComentarios.setText(String.valueOf(PostsLista.get(i).getCant_comentarios()));
         tvTitulo.setText(PostsLista.get(i).getTitle());
+        tvFecha.setText(PostsLista.get(i).getFecha());
         //formatear fecha
 
 
