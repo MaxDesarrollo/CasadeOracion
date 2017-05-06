@@ -39,11 +39,13 @@ private WebView wvContent;
         TextView tvTitulo = (TextView)findViewById(R.id.detalleTitulo);
         tvTitulo.setText(Title);
         ImageView imageView = (ImageView)findViewById(R.id.image);
+
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(null);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
         collapsingToolbarLayout.setContentScrimColor(Color.TRANSPARENT);
         collapsingToolbarLayout.setStatusBarScrimColor(Color.TRANSPARENT);
+
         wvContent = (WebView)findViewById(R.id.wvContent);
         wvContent.loadData(Content,"text/html; charset=utf-8","utf-8");
         Glide.with(this)

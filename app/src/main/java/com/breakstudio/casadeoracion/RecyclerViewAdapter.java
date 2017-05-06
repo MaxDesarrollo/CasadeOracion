@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import static com.breakstudio.casadeoracion.R.styleable.RecyclerView;
 
@@ -28,6 +30,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     Context context;
     List<Post> lista;
     ViewHolder vh;
+    String fechaApi,fecha1Obtenida,hora,año,mes,dia,mesLiteral,fechaFinal;
 
 
     public RecyclerViewAdapter(Context context, List<Post> lista) {
@@ -47,10 +50,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         vh.textView.setText(lista.get(position).getTitle());
         vh.destacadoComentarios.setText(String.valueOf(lista.get(position).getCant_comentarios()));
-        vh.fecha.setText(lista.get(position).getFecha());
 
-        Glide.with(context)
-                .load(lista.get(position).getThumbnail())
+
+        fechaApi = lista.get(position).getFecha();
+        StringTokenizer st = new StringTokenizer(fechaApi);
+        while (st.hasMoreElements()){
+            fecha1Obtenida = st.nextToken();
+            Log.d("Fecha", fecha1Obtenida);
+            hora = st.nextToken();
+            Log.d("Hora",hora);
+
+        }
+        String[] parts = fecha1Obtenida.split("-");
+        año = parts[0];
+        mes = parts[1];
+        dia = parts[2];
+        ReemplazarMes();
+
+        fechaFinal = dia + "-"+ mesLiteral + "-"+año;
+        Log.d("Obtenido",fechaFinal);
+
+        vh.fecha.setText(fechaFinal);
+
+
+
+        Glide.with(context) .load(lista.get(position).getThumbnail())
                 .centerCrop()
                 .crossFade()
                 .dontAnimate()
@@ -103,5 +127,52 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public void onClick(View view) {
             itemCLickListener.onItemClick(view,getAdapterPosition());
         }
+    }
+
+    public  void ReemplazarMes(){
+        switch (mes){
+            case "01":
+                mesLiteral = "Ene";
+                break;
+
+            case  "02":
+                mesLiteral = "Feb";
+                break;
+
+            case  "03":
+                mesLiteral = "Mar";
+                break;
+
+            case  "04":
+                mesLiteral = "Abr";
+                break;
+            case  "05":
+                mesLiteral = "May";
+                break;
+            case  "06":
+                mesLiteral = "Jun";
+                break;
+            case  "07":
+                mesLiteral = "Jul";
+                break;
+            case  "08":
+                mesLiteral = "Ago";
+                break;
+            case  "09":
+                mesLiteral = "Sep";
+                break;
+            case  "10":
+                mesLiteral = "Oct";
+                break;
+            case  "11":
+                mesLiteral = "Nov";
+                break;
+            case  "12":
+                mesLiteral = "Dic";
+                break;
+
+
+        }
+
     }
 }
