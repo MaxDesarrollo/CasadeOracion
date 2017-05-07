@@ -20,6 +20,8 @@ public class Post implements Serializable {
     @SerializedName("date")
     private String fecha;
 
+
+
     public Integer getCant_comentarios() {return cant_comentarios;}
 
     public void setCant_comentarios(Integer cant_comentarios) { this.cant_comentarios = cant_comentarios;}

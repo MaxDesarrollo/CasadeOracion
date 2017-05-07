@@ -114,6 +114,7 @@
                                     android:text="00 Feb 17"/>
                             </LinearLayout>
                             <LinearLayout
+                                android:id="@+id/lyComments"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="@dimen/meta_padding"
@@ -121,6 +122,7 @@
                                 <ImageView
                                     android:layout_width="@dimen/meta_icon_size"
                                     android:layout_height="@dimen/meta_icon_size"
+                                    android:id="@+id/btnComments"
                                     android:src="@drawable/commenticonblue_2x"/>
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -281,6 +283,17 @@
                 android:clipChildren="true"
                 android:background="@android:color/white"
                 >
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/lvComentario"
+                    android:background="@android:color/white">
+
+                </ListView>
                 <WebView
                     android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"

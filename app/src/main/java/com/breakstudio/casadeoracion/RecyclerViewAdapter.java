@@ -30,7 +30,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     Context context;
     List<Post> lista;
     ViewHolder vh;
-    String fechaApi,fecha1Obtenida,hora,año,mes,dia,mesLiteral,fechaFinal;
+    String fechaApi,fecha1Obtenida,hora,año,mes,dia,mesLiteral,fechaFinal,cant_comentarios;
 
 
     public RecyclerViewAdapter(Context context, List<Post> lista) {
@@ -50,6 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         vh.textView.setText(lista.get(position).getTitle());
         vh.destacadoComentarios.setText(String.valueOf(lista.get(position).getCant_comentarios()));
+        cant_comentarios = String.valueOf(lista.get(position).getCant_comentarios());
 
 
         fechaApi = lista.get(position).getFecha();
@@ -87,11 +88,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void onItemClick(View v, int pos) {
                 //Toast.makeText(context,"click"+ pos,Toast.LENGTH_SHORT).show();
+                String Id = lista.get(pos).getId();
+                String Conntent = lista.get(pos).getContent();
                 Intent  intent = new Intent(context,DetalleNoticia.class);
                 Bundle bundle=new Bundle();
                 bundle.putString("Title", lista.get(pos).getTitle());
                 bundle.putString("Thumbnail", lista.get(pos).getThumbnail());
                 bundle.putString("Content", lista.get(pos).getContent());
+                bundle.putString("Id",Id);
+                bundle.putString("Fecha",fechaFinal);
+                //bundle.putString("Content",Conntent);
+                bundle.putString("CantComentario",cant_comentarios);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
