@@ -40,5 +40,5 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             mDatabase.close();
         }
     }
-    
+
 }
