@@ -22,6 +22,10 @@ public interface PostService {
     Call<Comment> getComentario(@Path("post_id") String post_id);
 
 
+
+    @GET("wp/v2/posts?app=true&per_page=100")
+    Call<List<Post>> getAllPost();
+
     @GET("get_posts")
     Call<PostRespuesta> obtenerListadePosts();
     @GET("get_category_posts")

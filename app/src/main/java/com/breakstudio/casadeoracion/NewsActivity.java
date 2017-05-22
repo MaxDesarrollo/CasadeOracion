@@ -26,6 +26,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -52,6 +53,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +89,7 @@ public class NewsActivity extends AppCompatActivity{
     //private ListView lvpost;
     //private PredicaActivity predica;
 
-    private  static  final String TAG2 = "PREDICA";
+    private  static  final String TAG2 = "POSTS";
     //private Retrofit retrofit;
 
     //ListView lvPredica;
@@ -150,6 +152,8 @@ public class NewsActivity extends AppCompatActivity{
         ///getArrayPost();
         obtenerDatos();
         obtenerPredicas();
+        getDatos();
+
 
 
 
@@ -321,8 +325,8 @@ public class NewsActivity extends AppCompatActivity{
                     Log.e(TAG,"TodoBien"+ respuesta.toString());
                     rvAdapter = new RecyclerViewAdapter(getApplicationContext(), respuesta);
                     recyclerView.setAdapter(rvAdapter);
-                    adapter = new PostListAdapter(getApplicationContext(),respuesta);
-                    lvPost.setAdapter(adapter);
+                    /*adapter = new PostListAdapter(getApplicationContext(),respuesta);
+                    lvPost.setAdapter(adapter);*/
 
                     //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
                     LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
@@ -339,6 +343,42 @@ public class NewsActivity extends AppCompatActivity{
             });
 
         }
+
+    private void getDatos() {
+        PostService service = retrofit.create(PostService.class);
+        Call<List<Post>> Call = service.getAllPost();
+        Call.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
+                final List<Post> respuesta = response.body();
+                Log.e(TAG2,"TodoBien"+ respuesta.toString());
+                adapter = new PostListAdapter(getApplicationContext(),respuesta);
+                lvPost.setAdapter(adapter);
+
+                lvPost.setOnScrollListener(new InfiniteScrollListener(5) {
+                    @Override
+                    public void loadMore(int page, int totalItemsCount) {
+                        List<Post> newData = response.body();
+                        respuesta.addAll(newData);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+                //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
+                LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
+                //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
+                lp.height = respuesta.size()*dpToPx(110);
+                //Aplica el nuevo layout del Listview
+                lvPost.setLayoutParams(lp);
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.e(TAG2,"TodoMal: "+ t.getCause());
+            }
+        });
+
+    }
 
         private  void obtenerPredicas(){
             PostService service = retrofit.create(PostService.class);
