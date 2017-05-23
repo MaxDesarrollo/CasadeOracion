@@ -110,6 +110,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemCount() {
         return lista.size();
     }
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView;
         ImageView imageView;
@@ -135,6 +136,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemCLickListener.onItemClick(view,getAdapterPosition());
         }
     }
+
 
     public  void ReemplazarMes(){
         switch (mes){

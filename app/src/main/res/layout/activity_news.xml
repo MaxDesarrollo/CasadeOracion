@@ -45,7 +45,16 @@
                     android:id="@+id/textView4"
                     android:textColor="@color/backgroundRadio"
                     android:layout_below="@+id/rvDestacados"/>
-                <ListView
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvNews"
+                    android:layout_below="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"/>
+
+
+                <!--<ListView
                     android:layout_width="match_parent"
                     android:id="@+id/lvNews"
                     android:layout_below="@+id/textView4"
@@ -53,11 +62,11 @@
                     android:dividerHeight="10dp"
                     android:layout_marginBottom="80dp"
                     android:divider="@null"
-                    tools:ignore="HardcodedText"/>
+                    tools:ignore="HardcodedText"/>-->
                 <ListView
                     android:layout_width="match_parent"
                     android:id="@+id/lvPredica1"
-                    android:layout_below="@+id/lvNews"
+                    android:layout_below="@+id/rvNews"
                     android:layout_height="1000dp"
                     android:dividerHeight="10dp"
                     android:layout_marginBottom="80dp"

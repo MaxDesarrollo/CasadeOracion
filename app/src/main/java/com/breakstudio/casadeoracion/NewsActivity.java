@@ -79,12 +79,13 @@ public class NewsActivity extends AppCompatActivity{
     TextView textView4,bienvenido;
     //private List<Post> listaPosts;
     private PostListAdapter adapter;
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recyclerView,rvNews;
+    private RecyclerView.LayoutManager layoutManager,layoutManager1;
     private RecyclerView.Adapter rvAdapter;
     private TextView tvNombreUsuario;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    RecyclerViewAdapterPost rvNewsAdapter;
 
     //private ListView lvpost;
     //private PredicaActivity predica;
@@ -126,8 +127,15 @@ public class NewsActivity extends AppCompatActivity{
         }
         recyclerView = (RecyclerView) findViewById(R.id.rvDestacados);
         layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        layoutManager1 = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+
         recyclerView.setLayoutManager(layoutManager);
-        lvPost = (ListView) findViewById(R.id.lvNews);
+
+        rvNews = (RecyclerView) findViewById(R.id.rvNews);
+        rvNews.setLayoutManager(layoutManager1);
+
+
+        //lvPost = (ListView) findViewById(R.id.lvNews);
         lvPredica = (ListView) findViewById(R.id.lvPredica1);
         textView4 = (TextView) findViewById(R.id.textView4);
         lvPredica.setVisibility(View.GONE);
@@ -153,6 +161,15 @@ public class NewsActivity extends AppCompatActivity{
         obtenerDatos();
         obtenerPredicas();
         getDatos();
+
+        //Infinite Scroll
+        /*lvPost.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                //loadNextDataFromApi(page);
+                return true;
+            }
+        });*/
 
 
 
@@ -280,6 +297,47 @@ public class NewsActivity extends AppCompatActivity{
 
         }
 
+        public void  loadNextDataFromApi(int offset) {
+
+            PostService service = retrofit.create(PostService.class);
+            Call<List<Post>> Call = service.getAllPost();
+            Call.enqueue(new Callback<List<Post>>() {
+                @Override
+                public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
+                    final List<Post> respuesta = response.body();
+                    Log.e(TAG2,"TodoBien"+ respuesta.toString());
+                    adapter = new PostListAdapter(getApplicationContext(),respuesta);
+                    lvPost.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                /*lvPost.setOnScrollListener(new InfiniteScrollListener(10) {
+                    @Override
+                    public void loadMore(int page, int totalItemsCount) {
+                        List<Post> newData = response.body();
+                        respuesta.addAll(newData);
+                        adapter.notifyDataSetChanged();
+                    }
+                });*/
+
+                    //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
+                    LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
+                    //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
+                    lp.height = respuesta.size()*dpToPx(110);
+                    //Aplica el nuevo layout del Listview
+                    lvPost.setLayoutParams(lp);
+                }
+
+                @Override
+                public void onFailure(Call<List<Post>> call, Throwable t) {
+                    Log.e(TAG2,"TodoMal: "+ t.getCause());
+                }
+            });
+
+        }
+
+
+
+
 
 
 
@@ -329,11 +387,11 @@ public class NewsActivity extends AppCompatActivity{
                     lvPost.setAdapter(adapter);*/
 
                     //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
-                    LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
+                    /*LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
                     //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
                     lp.height = respuesta.size()*dpToPx(110);
                     //Aplica el nuevo layout del Listview
-                    lvPost.setLayoutParams(lp);
+                    lvPost.setLayoutParams(lp);*/
                 }
 
                 @Override
@@ -352,24 +410,29 @@ public class NewsActivity extends AppCompatActivity{
             public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
                 final List<Post> respuesta = response.body();
                 Log.e(TAG2,"TodoBien"+ respuesta.toString());
-                adapter = new PostListAdapter(getApplicationContext(),respuesta);
+                rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(),respuesta);
+                rvNews.setAdapter(rvNewsAdapter);
+
+
+
+                /*adapter = new PostListAdapter(getApplicationContext(),respuesta);
                 lvPost.setAdapter(adapter);
 
-                lvPost.setOnScrollListener(new InfiniteScrollListener(5) {
+                lvPost.setOnScrollListener(new InfiniteScrollListener(10) {
                     @Override
                     public void loadMore(int page, int totalItemsCount) {
                         List<Post> newData = response.body();
                         respuesta.addAll(newData);
                         adapter.notifyDataSetChanged();
                     }
-                });
+                });*/
 
                 //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
-                LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
+                /*LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
                 //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
                 lp.height = respuesta.size()*dpToPx(110);
                 //Aplica el nuevo layout del Listview
-                lvPost.setLayoutParams(lp);
+                lvPost.setLayoutParams(lp);*/
             }
 
             @Override
