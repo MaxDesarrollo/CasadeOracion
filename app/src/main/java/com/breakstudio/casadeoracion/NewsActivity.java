@@ -80,12 +80,17 @@ public class NewsActivity extends AppCompatActivity{
     //private List<Post> listaPosts;
     private PostListAdapter adapter;
     private RecyclerView recyclerView,rvNews;
-    private RecyclerView.LayoutManager layoutManager,layoutManager1;
+    private RecyclerView.LayoutManager layoutManager;
+    // el layoutManager1 es del recycler que pagina, por eso se declara de tipo LinearLayoutManager
+    private android.support.v7.widget.LinearLayoutManager layoutManager1;
     private RecyclerView.Adapter rvAdapter;
     private TextView tvNombreUsuario;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     RecyclerViewAdapterPost rvNewsAdapter;
+    //variables para la paginacion
+    private int page;
+    private boolean aptoParaCargar;
 
     //private ListView lvpost;
     //private PredicaActivity predica;
@@ -133,6 +138,29 @@ public class NewsActivity extends AppCompatActivity{
 
         rvNews = (RecyclerView) findViewById(R.id.rvNews);
         rvNews.setLayoutManager(layoutManager1);
+        rvNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy>0)
+                {
+                    int VisibleItemCount = layoutManager1.getChildCount();
+                    int totalItemCount = layoutManager1.getItemCount();
+                    int pastVisibleItems = layoutManager1.findFirstVisibleItemPosition();
+
+                    if(aptoParaCargar)
+                    {
+                        if((VisibleItemCount + pastVisibleItems)>= totalItemCount)
+                        {
+                            Log.i(TAG,"Llegamos al final");
+                            aptoParaCargar=false;
+                            page+=1;
+                            getDatos(page);
+                        }
+                    }
+                }
+            }
+        });
 
 
         //lvPost = (ListView) findViewById(R.id.lvNews);
@@ -158,9 +186,11 @@ public class NewsActivity extends AppCompatActivity{
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ///getArrayPost();
+        aptoParaCargar=true;
+        page=1;
         obtenerDatos();
         obtenerPredicas();
-        getDatos();
+        getDatos(page);
 
         //Infinite Scroll
         /*lvPost.setOnScrollListener(new EndlessScrollListener() {
@@ -300,7 +330,7 @@ public class NewsActivity extends AppCompatActivity{
         public void  loadNextDataFromApi(int offset) {
 
             PostService service = retrofit.create(PostService.class);
-            Call<List<Post>> Call = service.getAllPost();
+            Call<List<Post>> Call = service.getAllPost("true",page);
             Call.enqueue(new Callback<List<Post>>() {
                 @Override
                 public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
@@ -402,12 +432,13 @@ public class NewsActivity extends AppCompatActivity{
 
         }
 
-    private void getDatos() {
+    private void getDatos(int page) {
         PostService service = retrofit.create(PostService.class);
-        Call<List<Post>> Call = service.getAllPost();
+        Call<List<Post>> Call = service.getAllPost("true", page);
         Call.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
+                aptoParaCargar=true;
                 final List<Post> respuesta = response.body();
                 Log.e(TAG2,"TodoBien"+ respuesta.toString());
                 rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(),respuesta);
@@ -438,6 +469,7 @@ public class NewsActivity extends AppCompatActivity{
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Log.e(TAG2,"TodoMal: "+ t.getCause());
+                aptoParaCargar=true;
             }
         });
 

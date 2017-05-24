@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by Jaime on 13/3/2017.
@@ -23,8 +24,8 @@ public interface PostService {
 
 
 
-    @GET("wp/v2/posts?app=true&per_page=100")
-    Call<List<Post>> getAllPost();
+    @GET("wp/v2/posts")
+    Call<List<Post>> getAllPost( @Query("app") String app, @Query("page") int page);
 
     @GET("get_posts")
     Call<PostRespuesta> obtenerListadePosts();
