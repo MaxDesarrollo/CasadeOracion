@@ -134,6 +134,7 @@ public class NewsActivity extends AppCompatActivity{
         layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         layoutManager1 = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
+
         recyclerView.setLayoutManager(layoutManager);
 
         rvNews = (RecyclerView) findViewById(R.id.rvNews);
@@ -438,12 +439,13 @@ public class NewsActivity extends AppCompatActivity{
         Call.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
-                aptoParaCargar=true;
-                final List<Post> respuesta = response.body();
-                Log.e(TAG2,"TodoBien"+ respuesta.toString());
-                rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(),respuesta);
-                rvNews.setAdapter(rvNewsAdapter);
-
+                if(response.isSuccessful()) {
+                    aptoParaCargar = true;
+                    final List<Post> respuesta = response.body();
+                    Log.e(TAG2, "TodoBien" + respuesta.toString());
+                    rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(), respuesta);
+                    rvNews.setAdapter(rvNewsAdapter);
+                }
 
 
                 /*adapter = new PostListAdapter(getApplicationContext(),respuesta);
@@ -456,7 +458,7 @@ public class NewsActivity extends AppCompatActivity{
                         respuesta.addAll(newData);
                         adapter.notifyDataSetChanged();
                     }
-                });*/
+                });/*
 
                 //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
                 /*LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
