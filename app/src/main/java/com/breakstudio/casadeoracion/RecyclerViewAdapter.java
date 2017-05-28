@@ -97,6 +97,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 bundle.putString("Content", lista.get(pos).getContent());
                 bundle.putString("Id",Id);
                 bundle.putString("Fecha",fechaFinal);
+                bundle.putString("Link",lista.get(pos).getLink());
                 //bundle.putString("Content",Conntent);
                 bundle.putString("CantComentario",cant_comentarios);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

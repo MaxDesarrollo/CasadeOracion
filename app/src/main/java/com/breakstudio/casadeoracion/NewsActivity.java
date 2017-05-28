@@ -101,6 +101,9 @@ public class NewsActivity extends AppCompatActivity{
     //ListView lvPredica;
     //private RecyclerView recyclerView;
     private ListaPredicaAdapter listaPredicaAdapter;
+    private  EndlessRecyclerViewScrollListener scrollListener;
+
+
 
     //ListView lvPredica;
     //private RecyclerView recyclerView;
@@ -139,6 +142,12 @@ public class NewsActivity extends AppCompatActivity{
 
         rvNews = (RecyclerView) findViewById(R.id.rvNews);
         rvNews.setLayoutManager(layoutManager1);
+
+
+
+
+
+        /*rvNews.setLayoutManager(layoutManager1);
         rvNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -161,7 +170,7 @@ public class NewsActivity extends AppCompatActivity{
                     }
                 }
             }
-        });
+        });*/
 
 
         //lvPost = (ListView) findViewById(R.id.lvNews);
@@ -187,29 +196,22 @@ public class NewsActivity extends AppCompatActivity{
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ///getArrayPost();
-        aptoParaCargar=true;
+        //aptoParaCargar=true;
         page=1;
         obtenerDatos();
         obtenerPredicas();
         getDatos(page);
 
-        //Infinite Scroll
-        /*lvPost.setOnScrollListener(new EndlessScrollListener() {
+        //EndlesScroll
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager1) {
             @Override
-            public boolean onLoadMore(int page, int totalItemsCount) {
-                //loadNextDataFromApi(page);
-                return true;
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                page+=1;
+                getDatos(page);
+                //resetState();
             }
-        });*/
-
-
-
-
-
-
-
-
-
+        };
+        rvNews.addOnScrollListener(scrollListener);
 
         fab_menu = (FloatingActionButton)findViewById(R.id.fab_menu);
         fab_imagenes = (FloatingActionButton) findViewById(R.id.fab_imagenes);
@@ -341,14 +343,6 @@ public class NewsActivity extends AppCompatActivity{
                     lvPost.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
 
-                /*lvPost.setOnScrollListener(new InfiniteScrollListener(10) {
-                    @Override
-                    public void loadMore(int page, int totalItemsCount) {
-                        List<Post> newData = response.body();
-                        respuesta.addAll(newData);
-                        adapter.notifyDataSetChanged();
-                    }
-                });*/
 
                     //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
                     LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
@@ -440,32 +434,19 @@ public class NewsActivity extends AppCompatActivity{
             @Override
             public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
                 if(response.isSuccessful()) {
-                    aptoParaCargar = true;
+                    //aptoParaCargar = true;
                     final List<Post> respuesta = response.body();
                     Log.e(TAG2, "TodoBien" + respuesta.toString());
                     rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(), respuesta);
                     rvNews.setAdapter(rvNewsAdapter);
+
+                    //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
+                    /*LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
+                    //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
+                    lp.height = respuesta.size() * dpToPx(110);
+                    //Aplica el nuevo layout del Listview
+                    lvPost.setLayoutParams(lp);*/
                 }
-
-
-                /*adapter = new PostListAdapter(getApplicationContext(),respuesta);
-                lvPost.setAdapter(adapter);
-
-                lvPost.setOnScrollListener(new InfiniteScrollListener(10) {
-                    @Override
-                    public void loadMore(int page, int totalItemsCount) {
-                        List<Post> newData = response.body();
-                        respuesta.addAll(newData);
-                        adapter.notifyDataSetChanged();
-                    }
-                });/*
-
-                //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
-                /*LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
-                //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
-                lp.height = respuesta.size()*dpToPx(110);
-                //Aplica el nuevo layout del Listview
-                lvPost.setLayoutParams(lp);*/
             }
 
             @Override
@@ -503,36 +484,6 @@ public class NewsActivity extends AppCompatActivity{
             });
         }
 
-
-
-        private void getArrayPost(){
-            //HTTP LOGGER IGNORE - Freddy
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            httpClient.addInterceptor(logging);
-            /////END OF LOGGER - .client(httpClient.build()) initiates the logger in the request
-
-           retrofit2 = new Retrofit.Builder()
-                    .baseUrl("http://hashtag.breakstudio.co/wp-json/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(httpClient.build())
-                    .build();
-            PostServiceArray service = retrofit2.create(PostServiceArray.class);
-            Call<List<Post>> call = service.getPost();
-            call.enqueue(new Callback<List<Post>>() {
-                @Override
-                public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                    Log.d("onResponseArray",response.body().toString());
-                }
-
-                @Override
-                public void onFailure(Call<List<Post>> call, Throwable t) {
-                    Log.d("onFailureArray",t.toString());
-                }
-            });
-
-        }
         public int pxToDp(int px) {
             float density = NewsActivity.this.getResources()
                     .getDisplayMetrics()

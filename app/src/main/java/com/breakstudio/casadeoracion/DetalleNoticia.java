@@ -1,5 +1,6 @@
 package com.breakstudio.casadeoracion;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -29,9 +30,9 @@ private WebView wvContent;
     TextView tvTitulo,tvDetalleFecha,tvDetalleComentarios;
     ListView lvComentario;
     ImageView btnComents;
-    LinearLayout lyComments;
+    LinearLayout lyComments,lyShaeredButton;
     public  CommentsListAdapter lvAdapter;
-    public  String Title,Thumbnail,id,fecha,cant_comentario,Content,Author,Date,contentComment;
+    public  String Title,Thumbnail,id,fecha,cant_comentario,Content,Author,Date,contentComment,Link;
     public  static  final  String TAG="Comentarios";
     public  static  final  String TAG2="Comments";
     public  static  final  String TAG3="CommentsListView";
@@ -48,6 +49,7 @@ private WebView wvContent;
         Thumbnail = bundle.getString("Thumbnail");
         id = bundle.getString("Id");
         fecha = bundle.getString("Fecha");
+        Link = bundle.getString("Link");
         //Content = bundle.getString("Content");
         cant_comentario = bundle.getString("CantComentario");
         //String Content = bundle.getString("Content");
@@ -65,6 +67,7 @@ private WebView wvContent;
         btnComents = (ImageView) findViewById(R.id.btnComments);
         lyComments = (LinearLayout) findViewById(R.id.lyComments);
         lvComentario.setVisibility(View.GONE);
+        lyShaeredButton = (LinearLayout) findViewById(R.id.LySharedButton);
 
         tvDetalleFecha.setText(fecha);
         tvDetalleComentarios.setText(cant_comentario);
@@ -114,6 +117,20 @@ private WebView wvContent;
                     wvContent.setVisibility(View.VISIBLE);
                     lyComments.setBackgroundColor(Color.WHITE);
                 }
+
+            }
+        });
+
+        lyShaeredButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String shareBody = Link;
+                String shareSub = Title;
+                intent.putExtra(Intent.EXTRA_SUBJECT,shareSub);
+                intent.putExtra(Intent.EXTRA_TEXT,shareBody);
+                startActivity(Intent.createChooser(intent,"Comparte nuestro post utilizando..."));
 
             }
         });

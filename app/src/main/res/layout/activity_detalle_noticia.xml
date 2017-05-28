@@ -138,7 +138,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="@dimen/meta_padding"
-                                android:paddingEnd="@dimen/meta_padding">
+                                android:paddingEnd="@dimen/meta_padding"
+                                android:id="@+id/LySharedButton">
                                 <ImageView
                                     android:layout_width="@dimen/meta_icon_size"
                                     android:layout_height="@dimen/meta_icon_size"

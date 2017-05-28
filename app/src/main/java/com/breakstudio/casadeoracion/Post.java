@@ -19,8 +19,16 @@ public class Post implements Serializable {
     private Integer cant_comentarios;
     @SerializedName("date")
     private String fecha;
+    @SerializedName("link")
+    private String link;
 
+    public String getLink() {
+        return link;
+    }
 
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public Integer getCant_comentarios() {return cant_comentarios;}
 

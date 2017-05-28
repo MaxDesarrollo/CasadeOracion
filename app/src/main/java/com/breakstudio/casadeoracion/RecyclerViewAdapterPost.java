@@ -110,6 +110,8 @@ public class RecyclerViewAdapterPost extends RecyclerView.Adapter<RecyclerView.V
                 bundle.putString("CantComentario",cant_comentarios);
                 Log.d(TAG, "CantComentario " + cant_comentarios);
 
+                bundle.putString("Link",lista.get(pos).getLink());
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
