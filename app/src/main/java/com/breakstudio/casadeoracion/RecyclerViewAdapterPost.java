@@ -27,7 +27,8 @@ public class RecyclerViewAdapterPost extends RecyclerView.Adapter<RecyclerView.V
     ViewHolder vh;
     private static final String TAG = "OnClick";
 
-    String fechaApi,fecha1Obtenida,hora,año,mes,dia,mesLiteral,fechaFinal,cant_comentarios;
+    String fechaApi,fecha1Obtenida,hora,año,mes,dia,mesLiteral,fechaFinal;
+    int cant_comentarios;
 
     public RecyclerViewAdapterPost(Context context, List<Post> lista) {
         this.context = context;
@@ -51,7 +52,7 @@ public class RecyclerViewAdapterPost extends RecyclerView.Adapter<RecyclerView.V
 
         vh.tvComentarios.setText(String.valueOf(lista.get(position).getCant_comentarios()));
         vh.tvTitulo.setText(lista.get(position).getTitle());
-        cant_comentarios = String.valueOf(lista.get(position).getCant_comentarios());
+        //cant_comentarios = String.valueOf(lista.get(position).getCant_comentarios());
         //vh.tvFecha.setText(lista.get(position).getFecha());
 
         //Show Images
@@ -59,8 +60,8 @@ public class RecyclerViewAdapterPost extends RecyclerView.Adapter<RecyclerView.V
                 .centerCrop()
                 .crossFade()
                 .dontAnimate()
-                .fitCenter()
-                .dontTransform()
+                //.fitCenter()
+                //.dontTransform()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(vh.ivThumbnail);
 
@@ -106,8 +107,8 @@ public class RecyclerViewAdapterPost extends RecyclerView.Adapter<RecyclerView.V
                 Log.d(TAG, "Id " + lista.get(pos).getId());
                 bundle.putString("Fecha",fechaFinal);
                 Log.d(TAG, "Fecha " + fechaFinal);
-                //bundle.putString("Content",Conntent);
-                bundle.putString("CantComentario",cant_comentarios);
+                cant_comentarios = lista.get(pos).getCant_comentarios();
+                bundle.putInt("CantComentario",cant_comentarios);
                 Log.d(TAG, "CantComentario " + cant_comentarios);
 
                 bundle.putString("Link",lista.get(pos).getLink());

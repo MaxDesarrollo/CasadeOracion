@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,7 +34,8 @@ private WebView wvContent;
     ImageView btnComents;
     LinearLayout lyComments,lyShaeredButton;
     public  CommentsListAdapter lvAdapter;
-    public  String Title,Thumbnail,id,fecha,cant_comentario,Content,Author,Date,contentComment,Link;
+    public  String Title,Thumbnail,id,fecha,Content,Author,Date,contentComment,Link;
+    int cant_comentario;
     public  static  final  String TAG="Comentarios";
     public  static  final  String TAG2="Comments";
     public  static  final  String TAG3="CommentsListView";
@@ -51,12 +54,12 @@ private WebView wvContent;
         fecha = bundle.getString("Fecha");
         Link = bundle.getString("Link");
         //Content = bundle.getString("Content");
-        cant_comentario = bundle.getString("CantComentario");
+        cant_comentario = bundle.getInt("CantComentario");
         //String Content = bundle.getString("Content");
         Log.i("Llega: ",Title);
         Log.i("Llega: ",Thumbnail);
         Log.d("Llega",id);
-        Log.d("Llega",cant_comentario);
+        Log.d("Llega",String.valueOf(cant_comentario));
         //Log.d("Cotenido",Content);
         //Log.i("Llega: ",Content);
 
@@ -70,7 +73,7 @@ private WebView wvContent;
         lyShaeredButton = (LinearLayout) findViewById(R.id.LySharedButton);
 
         tvDetalleFecha.setText(fecha);
-        tvDetalleComentarios.setText(cant_comentario);
+        tvDetalleComentarios.setText(String.valueOf(cant_comentario));
 
         tvTitulo.setText(Title);
         ImageView imageView = (ImageView)findViewById(R.id.image);
@@ -86,7 +89,7 @@ private WebView wvContent;
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         obtenerContenido();
-        obtenerComentario();
+        //obtenerComentario();
 
         wvContent = (WebView)findViewById(R.id.wvContent);
 
@@ -108,6 +111,7 @@ private WebView wvContent;
         btnComents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                obtenerComentario();
                 if (wvContent.getVisibility() == View.VISIBLE){
                     wvContent.setVisibility(View.GONE);
                     lvComentario.setVisibility(View.VISIBLE);
@@ -146,22 +150,11 @@ private WebView wvContent;
             @Override
             public void onResponse(Call<Contenido> call, Response<Contenido> response) {
                 Contenido respuesta = response.body();
-                List<Comment> comments = respuesta.getComments();
-                Log.d("Coments1",comments.toString());
-                for (int i = 0; i < comments.size();i++){
-                    Author = respuesta.getComments().get(i).getAuthor();
-                    Log.d(TAG2,"Author: "+ Author);
-                    Date = respuesta.getComments().get(i).getDate();
-                    Log.d(TAG2,"Date: " + Date);
-                    contentComment = respuesta.getComments().get(i).getContent();
-                    Log.d(TAG2,"ContentComentary: " + contentComment);
+                    Content = respuesta.getContent().toString();
+                    wvContent.loadData(Content, "text/html; charset=utf-8", "utf-8");
+                    Log.d("Contenido", Content);
+                    Log.e(TAG, "TodoBien" + respuesta.toString());
 
-                }
-
-                Content = respuesta.getContent().toString();
-                wvContent.loadData(Content,"text/html; charset=utf-8","utf-8");
-                Log.d("Contenido",Content);
-                Log.e(TAG,"TodoBien"+ respuesta.toString());
             }
 
             @Override
@@ -181,22 +174,19 @@ private WebView wvContent;
             public void onResponse(Call<Contenido> call, Response<Contenido> response) {
                 Contenido  respuesta = response.body();
                 List<Comment> comments = respuesta.getComments();
-                Log.e(TAG3,"TodoBien"+ respuesta.toString());
-                Log.e(TAG3,"Comentarios"+ comments.toString());
-                lvAdapter = new CommentsListAdapter(getApplicationContext(),comments);
-                lvComentario.setAdapter(lvAdapter);
-                /*for (int i = 0; i < comments.size();i++){
-                    Author = respuesta.getComments().get(i).getAuthor();
-                    Log.d(TAG3,"Author: "+ Author);
-                    Date = respuesta.getComments().get(i).getDate();
-                    Log.d(TAG3,"Date: " + Date);
-                    contentComment = respuesta.getComments().get(i).getContent();
-                    Log.d(TAG3,"ContentComentary: " + contentComment);
+                if (comments.size()>0){
                     lvAdapter = new CommentsListAdapter(getApplicationContext(),comments);
                     lvComentario.setAdapter(lvAdapter);
 
-                }*/
-
+                    //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
+                    /*ListView.LayoutParams lp = (ListView.LayoutParams) lvComentario.getLayoutParams();
+                    //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
+                    lp.height = comments.size()*dpToPx(1000);
+                    //Aplica el nuevo layout del Listview
+                    lvComentario.setLayoutParams(lp);*/
+                }else {
+                    Toast.makeText(getApplicationContext(),"No hay comentarios para Mostrar",Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -205,6 +195,20 @@ private WebView wvContent;
 
             }
         });
+    }
+
+
+    public int pxToDp(int px) {
+        float density = DetalleNoticia.this.getResources()
+                .getDisplayMetrics()
+                .density;
+        return Math.round((float) px / density);
+    }
+    public int dpToPx(int dp) {
+        float density = DetalleNoticia.this.getResources()
+                .getDisplayMetrics()
+                .density;
+        return Math.round((float) dp * density);
     }
 
 

@@ -33,6 +33,7 @@ public class CommentsListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+
         return CommentLista.size();
     }
 

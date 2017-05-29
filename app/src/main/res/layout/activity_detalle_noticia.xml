@@ -283,18 +283,7 @@
                 android:layout_height="match_parent"
                 android:clipChildren="true"
                 android:background="@android:color/white"
-                >
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/lvComentario"
-                    android:background="@android:color/white">
-
-                </ListView>
+                android:id="@+id/rlContent">
                 <WebView
                     android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"
@@ -303,9 +292,21 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:id="@+id/wvContent"
-                    ></WebView>
-
+                    >
+                </WebView>
             </RelativeLayout>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="1000dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/lvComentario"
+                android:layout_below="@+id/rlContent"
+                android:background="@android:color/white">
+
+            </ListView>
 
 
 

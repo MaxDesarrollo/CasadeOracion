@@ -44,6 +44,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.gson.Gson;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,7 +90,7 @@ public class NewsActivity extends AppCompatActivity{
     private FirebaseAuth.AuthStateListener authStateListener;
     RecyclerViewAdapterPost rvNewsAdapter;
     //variables para la paginacion
-    private int page;
+    private int page2;
     private boolean aptoParaCargar;
 
     //private ListView lvpost;
@@ -101,7 +102,7 @@ public class NewsActivity extends AppCompatActivity{
     //ListView lvPredica;
     //private RecyclerView recyclerView;
     private ListaPredicaAdapter listaPredicaAdapter;
-    private  EndlessRecyclerViewScrollListener scrollListener;
+
 
 
 
@@ -147,7 +148,7 @@ public class NewsActivity extends AppCompatActivity{
 
 
 
-        /*rvNews.setLayoutManager(layoutManager1);
+        rvNews.setLayoutManager(layoutManager1);
         rvNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -164,13 +165,13 @@ public class NewsActivity extends AppCompatActivity{
                         {
                             Log.i(TAG,"Llegamos al final");
                             aptoParaCargar=false;
-                            page+=1;
-                            getDatos(page);
+                            page2+=1;
+                            getDatos(page2);
                         }
                     }
                 }
             }
-        });*/
+        });
 
 
         //lvPost = (ListView) findViewById(R.id.lvNews);
@@ -197,21 +198,20 @@ public class NewsActivity extends AppCompatActivity{
                 .build();
         ///getArrayPost();
         //aptoParaCargar=true;
-        page=1;
+        page2=1;
         obtenerDatos();
         obtenerPredicas();
-        getDatos(page);
+        getDatos(page2);
 
         //EndlesScroll
-        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager1) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                page+=1;
-                getDatos(page);
-                //resetState();
-            }
-        };
-        rvNews.addOnScrollListener(scrollListener);
+       /*scrollListener = new EndlessRecyclerViewScrollListener(layoutManager1) {
+           @Override
+           public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+               getDatos(page);
+           }
+       };
+       rvNews.addOnScrollListener(scrollListener);*/
+
 
         fab_menu = (FloatingActionButton)findViewById(R.id.fab_menu);
         fab_imagenes = (FloatingActionButton) findViewById(R.id.fab_imagenes);
@@ -333,7 +333,7 @@ public class NewsActivity extends AppCompatActivity{
         public void  loadNextDataFromApi(int offset) {
 
             PostService service = retrofit.create(PostService.class);
-            Call<List<Post>> Call = service.getAllPost("true",page);
+            Call<List<Post>> Call = service.getAllPost("true",page2);
             Call.enqueue(new Callback<List<Post>>() {
                 @Override
                 public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
@@ -427,18 +427,25 @@ public class NewsActivity extends AppCompatActivity{
 
         }
 
-    private void getDatos(int page) {
+    private void getDatos(final int page) {
         PostService service = retrofit.create(PostService.class);
         Call<List<Post>> Call = service.getAllPost("true", page);
         Call.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
                 if(response.isSuccessful()) {
-                    //aptoParaCargar = true;
+
                     final List<Post> respuesta = response.body();
-                    Log.e(TAG2, "TodoBien" + respuesta.toString());
-                    rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(), respuesta);
-                    rvNews.setAdapter(rvNewsAdapter);
+                    if (respuesta.size()>0){
+                        aptoParaCargar = true;
+                        Log.e(TAG2, "TodoBien" + respuesta.toString());
+                        rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(), respuesta);
+                        rvNews.setAdapter(rvNewsAdapter);
+                    }else{
+                        aptoParaCargar = false;
+                        Toast.makeText(getApplicationContext(),"No hay mas contenido por mostrar",Toast.LENGTH_LONG).show();
+                    }
+
 
                     //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
                     /*LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();

@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true">
         <ScrollView android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp">
+            android:layout_marginTop="100dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                     android:id="@+id/rvNews"
                     android:layout_below="@+id/textView4"
                     android:layout_width="match_parent"
-                    android:layout_height="600dp"
+                    android:layout_height="300dp"
                     android:layout_marginTop="0dp"/>
 
 
@@ -79,9 +79,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp">
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,8 +212,3 @@
     </RelativeLayout>
 
 </RelativeLayout>
-
-
-
-
-
