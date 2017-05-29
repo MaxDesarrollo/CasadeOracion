@@ -8,8 +8,10 @@ import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     MediaMetadataRetriever data;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -155,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    String URL ="http://us3.internet-radio.com:8007/stream?type=http&nocache=12473";
+                    String URL ="http://66.85.88.174/hot108";
                     //Stream Maniantal
                     //http://78.129.187.73:4138
 
@@ -169,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
                                     mp.start();
                                     pDialog.dismiss();
                                     isPaused=false;
-                                    String artist = data.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-                                    Log.d(Tag,"Artist "+artist);
+                                   //String artist = data.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+                                    //Log.d(Tag,"Artist "+artist);
                                 }
                             });
 
