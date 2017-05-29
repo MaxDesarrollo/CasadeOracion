@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -35,6 +36,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public class MainActivity extends AppCompatActivity {
     MediaPlayer mp = new MediaPlayer();
+    private  final String Tag="Data";
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ImageButton playBtn;
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Cancion> listaCanciones;
     private ImageButton shareButton;
     private ProgressDialog pDialog;
+    MediaMetadataRetriever data;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +155,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    String URL ="http://78.129.187.73:4138";
+                    String URL ="http://us3.internet-radio.com:8007/stream?type=http&nocache=12473";
+                    //Stream Maniantal
+                    //http://78.129.187.73:4138
 
                         try {
                             mp.setDataSource(URL);
@@ -163,7 +169,8 @@ public class MainActivity extends AppCompatActivity {
                                     mp.start();
                                     pDialog.dismiss();
                                     isPaused=false;
-
+                                    String artist = data.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+                                    Log.d(Tag,"Artist "+artist);
                                 }
                             });
 
