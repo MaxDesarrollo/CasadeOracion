@@ -203,14 +203,6 @@ public class NewsActivity extends AppCompatActivity{
         obtenerPredicas();
         getDatos(page2);
 
-        //EndlesScroll
-       /*scrollListener = new EndlessRecyclerViewScrollListener(layoutManager1) {
-           @Override
-           public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-               getDatos(page);
-           }
-       };
-       rvNews.addOnScrollListener(scrollListener);*/
 
 
         fab_menu = (FloatingActionButton)findViewById(R.id.fab_menu);
@@ -361,12 +353,6 @@ public class NewsActivity extends AppCompatActivity{
         }
 
 
-
-
-
-
-
-
         private void obtenerDatos() {
       /*      PostService service = retrofit.create(PostService.class);
             Call<PostRespuesta> postRespuestaCall = service.getPost();
@@ -429,13 +415,15 @@ public class NewsActivity extends AppCompatActivity{
 
     private void getDatos(final int page) {
         PostService service = retrofit.create(PostService.class);
-        Call<List<Post>> Call = service.getAllPost("true", page);
+        //Call<List<Post>> Call = service.getAllPost("true", page);
+        Call<List<Post>> Call = service.obtenerListadePosts();
         Call.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
                 if(response.isSuccessful()) {
 
                     final List<Post> respuesta = response.body();
+
                     if (respuesta.size()>0){
                         aptoParaCargar = true;
                         Log.e(TAG2, "TodoBien" + respuesta.toString());

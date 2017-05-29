@@ -27,8 +27,8 @@ public interface PostService {
     @GET("wp/v2/posts")
     Call<List<Post>> getAllPost( @Query("app") String app, @Query("page") int page);
 
-    @GET("get_posts")
-    Call<PostRespuesta> obtenerListadePosts();
+    @GET("wp/v2/posts?app=true&per_page=100")
+    Call<List<Post>> obtenerListadePosts();
     @GET("get_category_posts")
     Call<PostRespuesta> obtenerDestacados();
 
