@@ -29,10 +29,10 @@ public class CalendarioActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        obtenerDatos();
+       // obtenerDatos();
     }
 
-    private void obtenerDatos() {
+   /* private void obtenerDatos() {
         PostService service = retrofit.create(PostService.class);
         Call<CalendarioRespuesta> calendarioRespuestaCall = service.obtenerCalendario();
         calendarioRespuestaCall.enqueue(new Callback<CalendarioRespuesta>() {
@@ -58,5 +58,5 @@ public class CalendarioActivity extends AppCompatActivity {
                 Log.e(TAG,"onFailure: "+ t.getMessage());
             }
         });
-    }
+    }*/
 }

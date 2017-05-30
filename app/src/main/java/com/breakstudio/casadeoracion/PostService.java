@@ -32,11 +32,11 @@ public interface PostService {
     @GET("get_category_posts")
     Call<PostRespuesta> obtenerDestacados();
 
-    @GET("get_tag_posts/?tag_slug=Predicas")
-    Call<PredicaRespuesta> obtenerPredicas();
+    @GET("wp/v2/posts?app=true")
+    Call<List<Post>> obtenerPredicas();
 
-    @GET("get_tag_posts/?tag_slug=Predicas")
-    Call<CalendarioRespuesta> obtenerCalendario();
+    @GET("wp/v2/posts?app=true")
+    Call<List<Post>> obtenerCalendario();
 
     @GET("get_posts")
     Call<ImagenesRespuesta> obtenerImagenes();

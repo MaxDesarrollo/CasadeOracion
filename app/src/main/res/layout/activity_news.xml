@@ -63,15 +63,18 @@
                     android:layout_marginBottom="80dp"
                     android:divider="@null"
                     tools:ignore="HardcodedText"/>-->
-                <ListView
+                <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvPredicas"
+                android:layout_below="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvCalendario"
+                    android:layout_below="@+id/textView4"
                     android:layout_width="match_parent"
-                    android:id="@+id/lvPredica1"
-                    android:layout_below="@+id/rvNews"
-                    android:layout_height="1000dp"
-                    android:dividerHeight="10dp"
-                    android:layout_marginBottom="80dp"
-                    android:divider="@null"
-                    tools:ignore="HardcodedText"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"/>
 
 
             </RelativeLayout>

@@ -34,10 +34,10 @@ public class PredicaActivity extends AppCompatActivity {
                 .baseUrl("http://hashtag.breakstudio.co/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        obtenerDatos();
+       // obtenerDatos();
     }
 
-    public void obtenerDatos() {
+   /* public void obtenerDatos() {
 
         PostService service = retrofit.create(PostService.class);
         Call<PredicaRespuesta> predicaRespuestaCall = service.obtenerPredicas();
@@ -65,5 +65,5 @@ public class PredicaActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 }

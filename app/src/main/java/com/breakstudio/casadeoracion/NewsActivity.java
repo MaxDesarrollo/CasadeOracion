@@ -80,10 +80,10 @@ public class NewsActivity extends AppCompatActivity{
     TextView textView4,bienvenido;
     //private List<Post> listaPosts;
     private PostListAdapter adapter;
-    private RecyclerView recyclerView,rvNews;
+    private RecyclerView recyclerView,rvNews, rvPredicas, rvCalendario;
     private RecyclerView.LayoutManager layoutManager;
     // el layoutManager1 es del recycler que pagina, por eso se declara de tipo LinearLayoutManager
-    private android.support.v7.widget.LinearLayoutManager layoutManager1;
+    private android.support.v7.widget.LinearLayoutManager layoutManager1,lmPredicas,lmCalendario;
     private RecyclerView.Adapter rvAdapter;
     private TextView tvNombreUsuario;
     private FirebaseAuth firebaseAuth;
@@ -138,15 +138,17 @@ public class NewsActivity extends AppCompatActivity{
         recyclerView = (RecyclerView) findViewById(R.id.rvDestacados);
         layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         layoutManager1 = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        lmPredicas = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        lmCalendario = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
 
         recyclerView.setLayoutManager(layoutManager);
 
         rvNews = (RecyclerView) findViewById(R.id.rvNews);
-        rvNews.setLayoutManager(layoutManager1);
-
-
-
+        rvPredicas = (RecyclerView) findViewById(R.id.rvPredicas);
+        rvPredicas.setLayoutManager(lmPredicas);
+        rvCalendario = (RecyclerView) findViewById(R.id.rvCalendario);
+        rvCalendario.setLayoutManager(lmCalendario);
 
 
         rvNews.setLayoutManager(layoutManager1);
@@ -176,9 +178,10 @@ public class NewsActivity extends AppCompatActivity{
 
 
         //lvPost = (ListView) findViewById(R.id.lvNews);
-        lvPredica = (ListView) findViewById(R.id.lvPredica1);
+        //lvPredica = (ListView) findViewById(R.id.lvPredica1);
         textView4 = (TextView) findViewById(R.id.textView4);
-        lvPredica.setVisibility(View.GONE);
+        rvPredicas.setVisibility(View.GONE);
+        rvCalendario.setVisibility(View.GONE);
         bienvenido = (TextView) findViewById(R.id.bienvenido);
         //lvPost.setScrollContainer(false);
         obtenerHora();
@@ -202,6 +205,7 @@ public class NewsActivity extends AppCompatActivity{
         page2=1;
         obtenerDatos();
         obtenerPredicas();
+        obtenerCalendario();
         getDatos(page2);
 
 
@@ -217,39 +221,17 @@ public class NewsActivity extends AppCompatActivity{
         FabantiClockWise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
         FabClockWise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
 
+
         fab_menu.setOnClickListener(new View.OnClickListener(){
             @Override
             public  void  onClick(View v){
                 if(isOpen)
                 {
-                    fab_predicas.startAnimation(FabClose);
-                    fab_imagenes.startAnimation(FabClose);
-                    fab_videos.startAnimation(FabClose);
-                    fab_calendario.startAnimation(FabClose);
-                    fab_noticias.startAnimation(FabClose);
-                    fab_predicas.setClickable(false);
-                    fab_imagenes.setClickable(false);
-                    fab_videos.setClickable(false);
-                    fab_calendario.setClickable(false);
-                    fab_noticias.setClickable(false);
-                    fab_menu.setVisibility(View.VISIBLE);
-                    isOpen = false;
+                    CerrarElementos();
                 }
                 else
                 {
-                    fab_predicas.startAnimation(FabOpen);
-                    fab_imagenes.startAnimation(FabOpen);
-                    fab_videos.startAnimation(FabOpen);
-                    fab_calendario.startAnimation(FabOpen);
-                    fab_noticias.startAnimation(FabOpen);
-                    fab_predicas.setClickable(true);
-                    fab_imagenes.setClickable(true);
-                    fab_videos.setClickable(true);
-                    fab_calendario.setClickable(true);
-                    fab_noticias.setClickable(true);
-                    fab_menu.setVisibility(View.VISIBLE);
-
-                    isOpen = true;
+                    AbrirElementos();
                 }
 
 
@@ -257,9 +239,9 @@ public class NewsActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View v) {
                         //here
-                        startActivity(new Intent(NewsActivity.this,newsFloatActivity.class));
-                        // or:
-                        //startActivity(new Intent(v.getContext(),newsFloatActivity.class));
+                        //FALTA IMPLEMENTAR, CREAR RECYCLERVIEW; HACER CONSULTA A LA API
+                        CerrarElementos();
+                        textView4.setText("ULTIMAS PUBLICACIONES");
 
                     }
                 });
@@ -271,14 +253,16 @@ public class NewsActivity extends AppCompatActivity{
                         //startActivity(new Intent(NewsActivity.this,PredicaActivity.class));
                         // or:
                         //startActivity(new Intent(v.getContext(),PredicaActivity.class));
-                        if (lvPost.getVisibility() == View.VISIBLE ){
-                            lvPost.setVisibility(View.GONE);
-                            lvPredica.setVisibility(View.VISIBLE);
-                            textView4.setText("PREDICAS");
-                        }else if (lvPost.getVisibility() == View.GONE){
-                            lvPost.setVisibility(View.VISIBLE);
-                            lvPredica.setVisibility(View.GONE);
+                        CerrarElementos();
+                        if(rvPredicas.getVisibility()==View.VISIBLE){
+                            rvPredicas.setVisibility(View.GONE);
+                            rvNews.setVisibility(View.VISIBLE);
                             textView4.setText("ULTIMAS PUBLICACIONES");
+                        }else{
+                            textView4.setText("PREDICAS");
+                            rvNews.setVisibility(View.GONE);
+                            rvPredicas.setVisibility(View.VISIBLE);
+                            rvCalendario.setVisibility(View.GONE);
                         }
 
                         //predica.obtenerDatos();
@@ -301,9 +285,9 @@ public class NewsActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View v) {
                         //here
-                        startActivity(new Intent(NewsActivity.this,ImagenesActivity.class));
-                        // or:
-                        //startActivity(new Intent(v.getContext(),ImagenesActivity.class));
+                        //FALTA IMPLEMENTAR, CREAR RECYCLERVIEW; HACER CONSULTA A LA API
+                        CerrarElementos();
+                        textView4.setText("GALERIA DE IMAGENES");
                     }
                 });
 
@@ -311,9 +295,17 @@ public class NewsActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View v) {
                         //here
-                        startActivity(new Intent(NewsActivity.this,CalendarioActivity.class));
-                        // or:
-                        //startActivity(new Intent(v.getContext(),CalendarioActivity.class));
+                        CerrarElementos();
+                        if(rvCalendario.getVisibility()==View.VISIBLE){
+                            rvCalendario.setVisibility(View.GONE);
+                            rvNews.setVisibility(View.VISIBLE);
+                            textView4.setText("ULTIMAS PUBLICACIONES");
+                        }else{
+                            textView4.setText("CALENDARIO");
+                            rvNews.setVisibility(View.GONE);
+                            rvPredicas.setVisibility(View.GONE);
+                        rvCalendario.setVisibility(View.VISIBLE);
+                    }
                     }
                 });
 
@@ -321,6 +313,35 @@ public class NewsActivity extends AppCompatActivity{
         });
 
 
+
+        }
+        public  void CerrarElementos(){
+            fab_predicas.startAnimation(FabClose);
+            fab_imagenes.startAnimation(FabClose);
+            fab_videos.startAnimation(FabClose);
+            fab_calendario.startAnimation(FabClose);
+            fab_noticias.startAnimation(FabClose);
+            fab_predicas.setClickable(false);
+            fab_imagenes.setClickable(false);
+            fab_videos.setClickable(false);
+            fab_calendario.setClickable(false);
+            fab_noticias.setClickable(false);
+            isOpen = false;
+        }
+        public void AbrirElementos(){
+            fab_predicas.startAnimation(FabOpen);
+            fab_imagenes.startAnimation(FabOpen);
+            fab_videos.startAnimation(FabOpen);
+            fab_calendario.startAnimation(FabOpen);
+            fab_noticias.startAnimation(FabOpen);
+            fab_predicas.setClickable(true);
+            fab_imagenes.setClickable(true);
+            fab_videos.setClickable(true);
+            fab_calendario.setClickable(true);
+            fab_noticias.setClickable(true);
+            fab_menu.setVisibility(View.VISIBLE);
+
+            isOpen = true;
         }
 
         public void  loadNextDataFromApi(int offset) {
@@ -414,7 +435,7 @@ public class NewsActivity extends AppCompatActivity{
 
         }
 
-    private void getDatos(final int page) {
+        private void getDatos(final int page) {
         PostService service = retrofit.create(PostService.class);
         //Call<List<Post>> Call = service.getAllPost("true", page);
         Call<List<Post>> Call = service.obtenerListadePosts();
@@ -422,9 +443,7 @@ public class NewsActivity extends AppCompatActivity{
             @Override
             public void onResponse(Call<List<Post>> call, final Response<List<Post>> response) {
                 if(response.isSuccessful()) {
-
                     final List<Post> respuesta = response.body();
-
                     if (respuesta.size()>0){
                         aptoParaCargar = true;
                         Log.e(TAG2, "TodoBien" + respuesta.toString());
@@ -434,8 +453,6 @@ public class NewsActivity extends AppCompatActivity{
                         aptoParaCargar = false;
                         Toast.makeText(getApplicationContext(),"No hay mas contenido por mostrar",Toast.LENGTH_LONG).show();
                     }
-
-
                     //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
                     /*LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
                     //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
@@ -444,7 +461,6 @@ public class NewsActivity extends AppCompatActivity{
                     lvPost.setLayoutParams(lp);*/
                 }
             }
-
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Log.e(TAG2,"TodoMal: "+ t.getCause());
@@ -456,29 +472,44 @@ public class NewsActivity extends AppCompatActivity{
 
         private  void obtenerPredicas(){
             PostService service = retrofit.create(PostService.class);
-            Call<PredicaRespuesta> predicaRespuestaCall = service.obtenerPredicas();
-            predicaRespuestaCall.enqueue(new Callback<PredicaRespuesta>() {
+            Call<List<Post>> predicaRespuestaCall = service.obtenerPredicas();
+            predicaRespuestaCall.enqueue(new Callback<List<Post>>() {
                 @Override
-                public void onResponse(Call<PredicaRespuesta> call, Response<PredicaRespuesta> response) {
-                    if(response.isSuccessful()){
-                        Log.e(TAG2,"onResponse : Entra Predica");
-                        PredicaRespuesta predicaRespuesta = response.body();
-                        lvPredica = (ListView) findViewById(R.id.lvPredica1);
-                        ArrayList<Post> listaPost = predicaRespuesta.getPosts();
-                        listaPredicaAdapter = new ListaPredicaAdapter(getApplicationContext(),listaPost);
-                        lvPredica.setAdapter(listaPredicaAdapter);
+                public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                    if(response.isSuccessful()) {
+                        final List<Post> respuesta = response.body();
+                        rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(), respuesta);
+                        rvPredicas.setAdapter(rvNewsAdapter);
                     }
-                    else {
-                        Log.e(TAG,"onResponse: "+response.errorBody());
-                    }
+                    Log.e(TAG2,"Predicas Bien: "+ response.body().toString());
                 }
 
                 @Override
-                public void onFailure(Call<PredicaRespuesta> call, Throwable t) {
-                    Log.e(TAG,"onFailure: "+ t.getMessage());
+                public void onFailure(Call<List<Post>> call, Throwable t) {
+                    Log.e(TAG2,"Predicas Mal: "+ t.getCause());
                 }
             });
         }
+    private  void obtenerCalendario(){
+        PostService service = retrofit.create(PostService.class);
+        Call<List<Post>> calendarioRespuestaCall = service.obtenerCalendario();
+        calendarioRespuestaCall.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                if(response.isSuccessful()) {
+                    final List<Post> respuesta = response.body();
+                    rvNewsAdapter = new RecyclerViewAdapterPost(getApplicationContext(), respuesta);
+                    rvCalendario.setAdapter(rvNewsAdapter);
+                }
+                Log.e(TAG2,"Predicas Bien: "+ response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.e(TAG2,"Predicas Mal: "+ t.getCause());
+            }
+        });
+    }
 
         public int pxToDp(int px) {
             float density = NewsActivity.this.getResources()
