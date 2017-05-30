@@ -149,28 +149,31 @@ public class MainActivity extends AppCompatActivity {
                 if(isPlaying){
                     mp.start();
                     isPlaying=false;
-                    Cambiar(playBtn);
+                    Cambiar(playBtn,true);
                 }
                 else{
                  AsyncTask<Void,Void,Void> task = new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
-                        pDialog.setTitle("Processing...");
-                        pDialog.setMessage("Please wait.");
+                        pDialog.setTitle("Conectando...");
+                        pDialog.setMessage("Por favor, espere.");
                         pDialog.setCancelable(true);
                         pDialog.setIndeterminate(true);
 
                         pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            mp.pause();
+                            if(mp.isLooping() || mp.isPlaying()){
+                                mp.stop();
+                                //Cambiar(playBtn,false);
+                            }
                             isPlaying=true;
-                            Cambiar(playBtn);
+                            Cambiar(playBtn,false);
                             Toast.makeText(getApplication(),"Se cancelo el servicio",Toast.LENGTH_LONG).show();
                         }
                     });
                     pDialog.show();
-                    Cambiar(playBtn);
+                    Cambiar(playBtn,true);
                 }
                 @Override
                 protected Void doInBackground(Void... voids) {
@@ -212,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 mp.pause();
                 isPlaying=true;
-                Cambiar(playBtn);
+                Cambiar(playBtn,false);
             }
             }
         });
@@ -229,18 +232,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void Cambiar(View view) {
-
+    public void Cambiar(View view, boolean tocando) {
+        /* la variable "tocando" es un booleano que manda verdadero si esta reproduciendo
+        la musica para convertir el boton a pause, si es falso, lo convierte en "play"*/
         ImageButton btn = (ImageButton)view;
-        //btn.setImageResource(R.drawable.pausebutton_1x);
-
-
-        if(!mp.isPlaying()) {
-           // LeventarRadio();
+        if(tocando) {
             btn.setImageResource(R.drawable.pausebutton_1x);
         }
-        else if (mp.isPlaying()){
-            //mp.pause();
+        else {
             btn.setImageResource(R.drawable.playbutton_1x);
         }
     }
@@ -249,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
     private void shareIt(){
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "URL de la aplicacion en la tienda.");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "App de Radio Manantial: \n https://play.google.com/store/apps/details?id=com.breakstudio.casadeoracion");
         shareIntent.setType("text/plain");
         startActivity(shareIntent);
     }
