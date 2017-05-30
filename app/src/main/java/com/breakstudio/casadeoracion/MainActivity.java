@@ -2,6 +2,7 @@ package com.breakstudio.casadeoracion;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ImageButton playBtn;
     private SeekBar Volumen;
-    private boolean isPaused=false;
+    private boolean isPlaying=false;
     private AudioManager audioManager;
     //Lista de para las canciones y adaptador
     private ListView lvCancion;
@@ -142,16 +143,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
                // Cambiar(playBtn);
-            if(!mp.isPlaying() || isPaused) {
-                if(isPaused){mp.start();isPaused=false; Cambiar(playBtn);}else{
-             AsyncTask<Void,Void,Void> task = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected void onPreExecute() {
-                    pDialog.setTitle("Processing...");
-                    pDialog.setMessage("Please wait.");
-                    pDialog.setCancelable(false);
-                    pDialog.setIndeterminate(true);
+            if(!mp.isPlaying() || isPlaying) {
+                if(isPlaying){
+                    mp.start();
+                    isPlaying=false;
+                    Cambiar(playBtn);
+                }
+                else{
+                 AsyncTask<Void,Void,Void> task = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        pDialog.setTitle("Processing...");
+                        pDialog.setMessage("Please wait.");
+                        pDialog.setCancelable(true);
+                        pDialog.setIndeterminate(true);
+
+                        pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mp.pause();
+                            isPlaying=true;
+                            Cambiar(playBtn);
+                            Toast.makeText(getApplication(),"Se cancelo el servicio",Toast.LENGTH_LONG).show();
+                        }
+                    });
                     pDialog.show();
                     Cambiar(playBtn);
                 }
@@ -171,9 +188,9 @@ public class MainActivity extends AppCompatActivity {
                                 public void onPrepared(MediaPlayer mediaPlayer) {
                                     mp.start();
                                     pDialog.dismiss();
-                                    isPaused=false;
-                                   //String artist = data.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-                                    //Log.d(Tag,"Artist "+artist);
+                                    isPlaying=false;
+                                   /*String artist = data.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+                                    Log.d(Tag,"Artist "+artist);*/
                                 }
                             });
 
@@ -189,9 +206,14 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 };
+
                 if(!mp.isPlaying())
                     task.execute((Void[])null);}
-            }else{mp.pause(); isPaused=true; Cambiar(playBtn);}
+            }else{
+                mp.pause();
+                isPlaying=true;
+                Cambiar(playBtn);
+            }
             }
         });
 
@@ -217,37 +239,13 @@ public class MainActivity extends AppCompatActivity {
            // LeventarRadio();
             btn.setImageResource(R.drawable.pausebutton_1x);
         }
-        else {
+        else if (mp.isPlaying()){
             //mp.pause();
             btn.setImageResource(R.drawable.playbutton_1x);
         }
     }
 
-    /*public  void LeventarRadio(){
 
-        mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        String URL ="http://78.129.187.73:4138";
-
-
-        try {
-            mp.setDataSource(URL);
-            mp.prepare();
-
-        } catch (IllegalArgumentException e) {
-            //Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-        } catch (SecurityException e) {
-            //Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-        } catch (IllegalStateException e) {
-           // Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        mp.setVolume(50,50);
-        mp.start();
-
-    }*/
     private void shareIt(){
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
