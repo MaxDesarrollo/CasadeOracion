@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pDialog = new ProgressDialog(this);
-        final String url ="http://78.129.187.73:4138";
 
         //Boton de compartir
         shareButton = (ImageButton)findViewById(R.id.share);
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
+                    final String url ="http://78.129.187.73:4138";
                     //Stream Prueba
                     //http://66.85.88.174/hot108
 
@@ -214,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
                     protected void onPostExecute(Void result) {
                         if (mp.isPlaying()){
                             pDialog.dismiss();
-                            
                         }
 
                     }
