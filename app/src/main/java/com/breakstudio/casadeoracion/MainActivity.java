@@ -10,31 +10,33 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URL;
 
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pDialog = new ProgressDialog(this);
+        final String url ="http://78.129.187.73:4138";
 
         //Boton de compartir
         shareButton = (ImageButton)findViewById(R.id.share);
@@ -178,22 +181,26 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    String URL ="http://66.85.88.174/hot108";
-                    //Stream Maniantal
-                    //http://78.129.187.73:4138
+
+                    //Stream Prueba
+                    //http://66.85.88.174/hot108
 
                         try {
-                            mp.setDataSource(URL);
+                            mp.setDataSource(url);
                             mp.prepare();
                             mp.setVolume(50,50);
                             mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                                 @Override
                                 public void onPrepared(MediaPlayer mediaPlayer) {
                                     mp.start();
-                                    pDialog.dismiss();
+                                    //pDialog.dismiss();
                                     isPlaying=false;
                                    /*String artist = data.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
                                     Log.d(Tag,"Artist "+artist);*/
+
+
+
+
                                 }
                             });
 
@@ -205,7 +212,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                     @Override
                     protected void onPostExecute(Void result) {
-
+                        if (mp.isPlaying()){
+                            pDialog.dismiss();
+                            
+                        }
 
                     }
                 };
