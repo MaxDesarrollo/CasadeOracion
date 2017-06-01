@@ -50,6 +50,7 @@ dependencies {
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
+    compile 'org.jsoup:jsoup:1.10.2'
     testCompile 'junit:junit:4.12'
 }
 

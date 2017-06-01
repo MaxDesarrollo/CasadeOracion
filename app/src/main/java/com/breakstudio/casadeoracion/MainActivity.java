@@ -27,16 +27,17 @@ import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URL;
-
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -54,7 +55,10 @@ public class MainActivity extends AppCompatActivity {
     private List<Cancion> listaCanciones;
     private ImageButton shareButton;
     private ProgressDialog pDialog;
-    MediaMetadataRetriever data;
+    //Variables para el consumo de la metadata del streaming
+    IcyStreamMeta streamMeta;
+    MetadataTask2 metadataTask2;
+    String title_artist;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -66,7 +70,32 @@ public class MainActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.parseColor("#1e8bb3"));
+
+        ///////Clases y Funciones para capturar titulo de current Song//////////
+
+        String streamUrl = "http://rs3.radiostreamer.com:14900";
+
+        streamMeta = new IcyStreamMeta();
+        try {
+            streamMeta.setStreamUrl(new URL(streamUrl));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        metadataTask2 =new MetadataTask2();
+        try {
+            metadataTask2.execute(new URL(streamUrl));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Timer timer = new Timer();
+        MyTimerTask task = new MyTimerTask();
+        timer.schedule(task,100, 10000);
+
+
         ////////////////////////////
+
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -83,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         };
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         pDialog = new ProgressDialog(this);
 
         //Boton de compartir
@@ -180,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    final String url ="http://78.129.187.73:4138";
-                    //Stream Prueba
-                    //http://66.85.88.174/hot108
+                    final String url ="http://rs3.radiostreamer.com:14900";
+                    //Stream Manantial
+                    //http://78.129.187.73:4138
 
                         try {
                             mp.setDataSource(url);
@@ -211,10 +241,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                     @Override
                     protected void onPostExecute(Void result) {
-                        if (mp.isPlaying()){
+                        if (mp.isPlaying()) {
                             pDialog.dismiss();
-                        }
 
+                        }
                     }
                 };
 
@@ -229,7 +259,59 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    protected class MetadataTask2 extends AsyncTask<URL, Void, IcyStreamMeta>
+    {
+        @Override
+        protected IcyStreamMeta doInBackground(URL... urls)
+        {
+            try
+            {
+                streamMeta.refreshMeta();
+                Log.e("Retrieving MetaData","Refreshed Metadata");
+            }
+            catch (IOException e)
+            {
+                Log.e(MetadataTask2.class.toString(), e.getMessage());
+            }
+            return streamMeta;
+        }
 
+        @Override
+        protected void onPostExecute(IcyStreamMeta result)
+        {
+            try
+            {
+                title_artist=streamMeta.getStreamTitle();
+                Log.e("Retrieved title_artist", title_artist);
+                if(title_artist.length()>0)
+                {
+                    //textView.setText(title_artist);
+                }
+            }
+            catch (IOException e)
+            {
+                Log.e(MetadataTask2.class.toString(), e.getMessage());
+            }
+        }
+    }
+
+    class MyTimerTask extends TimerTask {
+        public void run() {
+            try {
+                streamMeta.refreshMeta();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                String title_artist=streamMeta.getStreamTitle();
+                Log.i("ARTIST TITLE", title_artist);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
     @Override
     public void onBackPressed(){
         this.moveTaskToBack(true);
@@ -239,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
         intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
     public void Cambiar(View view, boolean tocando) {
         /* la variable "tocando" es un booleano que manda verdadero si esta reproduciendo
         la musica para convertir el boton a pause, si es falso, lo convierte en "play"*/
@@ -271,4 +352,5 @@ public class MainActivity extends AppCompatActivity {
         goLoginScreen();
 
     }
+
 }
