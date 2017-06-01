@@ -119,4 +119,14 @@
         android:layout_alignStart="@+id/lvCanciones"
         android:layout_alignEnd="@+id/lvCanciones" />
 
+    <TextView
+        android:id="@+id/CurrentSong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text=""
+        android:textColor="@color/cardview_light_background" />
+
 </RelativeLayout>

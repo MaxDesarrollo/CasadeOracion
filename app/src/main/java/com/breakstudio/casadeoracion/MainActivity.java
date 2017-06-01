@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -56,9 +57,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton shareButton;
     private ProgressDialog pDialog;
     //Variables para el consumo de la metadata del streaming
-    IcyStreamMeta streamMeta;
-    MetadataTask2 metadataTask2;
-    String title_artist;
+    private IcyStreamMeta streamMeta;
+    private MetadataTask2 metadataTask2;
+    private String title_artist;
+    private TextView CurrentSong;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         ///////Clases y Funciones para capturar titulo de current Song//////////
 
-        String streamUrl = "http://rs3.radiostreamer.com:14900";
+        String streamUrl = "http://78.129.187.73:4138";
 
         streamMeta = new IcyStreamMeta();
         try {
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         };
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        CurrentSong = (TextView)findViewById(R.id.CurrentSong);
         pDialog = new ProgressDialog(this);
 
         //Boton de compartir
@@ -210,9 +212,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    final String url ="http://rs3.radiostreamer.com:14900";
+                    final String url ="http://78.129.187.73:4138";
                     //Stream Manantial
                     //http://78.129.187.73:4138
+                    // Stream Prueba reproduccion
+                    //http://66.85.88.174/hot108
+                    // Stream Prueba meta data
+                    //http://rs3.radiostreamer.com:14900
 
                         try {
                             mp.setDataSource(url);
@@ -243,6 +249,14 @@ public class MainActivity extends AppCompatActivity {
                     protected void onPostExecute(Void result) {
                         if (mp.isPlaying()) {
                             pDialog.dismiss();
+                            try {
+                                Log.i("Song",streamMeta.getStreamTitle());
+                                CurrentSong.setText(streamMeta.getStreamTitle());
+                                //CurrentSong.setVisibility(View.VISIBLE);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
 
                         }
                     }
@@ -305,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String title_artist=streamMeta.getStreamTitle();
                 Log.i("ARTIST TITLE", title_artist);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
