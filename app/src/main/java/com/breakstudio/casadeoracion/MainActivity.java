@@ -184,6 +184,13 @@ public class MainActivity extends AppCompatActivity {
                     mp.start();
                     isPlaying=false;
                     Cambiar(playBtn,true);
+                    try {
+                        Log.i("Song",streamMeta.getStreamTitle());
+                        CurrentSong.setText(streamMeta.getStreamTitle());
+                        //CurrentSong.setVisibility(View.VISIBLE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else{
                  AsyncTask<Void,Void,Void> task = new AsyncTask<Void, Void, Void>() {
@@ -229,13 +236,12 @@ public class MainActivity extends AppCompatActivity {
                                 public void onPrepared(MediaPlayer mediaPlayer) {
                                     mp.start();
                                     //pDialog.dismiss();
+                                    try {
+                                        CurrentSong.setText(streamMeta.getStreamTitle());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                     isPlaying=false;
-                                   /*String artist = data.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-                                    Log.d(Tag,"Artist "+artist);*/
-
-
-
-
                                 }
                             });
 
@@ -251,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
                             pDialog.dismiss();
                             try {
                                 Log.i("Song",streamMeta.getStreamTitle());
-                                CurrentSong.setText(streamMeta.getStreamTitle());
+
                                 //CurrentSong.setVisibility(View.VISIBLE);
                             } catch (IOException e) {
                                 e.printStackTrace();
