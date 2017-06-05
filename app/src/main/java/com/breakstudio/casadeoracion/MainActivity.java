@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(Color.parseColor("#1e8bb3"));
 
         ///////Clases y Funciones para capturar titulo de current Song//////////
-
-        String streamUrl = "http://78.129.187.73:4138";
+        //http://rs3.radiostreamer.com:14900
+        String streamUrl = "http://rs3.radiostreamer.com:14900";
 
         streamMeta = new IcyStreamMeta();
         try {
@@ -184,13 +184,7 @@ public class MainActivity extends AppCompatActivity {
                     mp.start();
                     isPlaying=false;
                     Cambiar(playBtn,true);
-                    try {
-                        Log.i("Song",streamMeta.getStreamTitle());
-                        CurrentSong.setText(streamMeta.getStreamTitle());
-                        //CurrentSong.setVisibility(View.VISIBLE);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
                 }
                 else{
                  AsyncTask<Void,Void,Void> task = new AsyncTask<Void, Void, Void>() {
@@ -219,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    final String url ="http://78.129.187.73:4138";
+                    final String url ="http://rs3.radiostreamer.com:14900";
                     //Stream Manantial
                     //http://78.129.187.73:4138
                     // Stream Prueba reproduccion
@@ -236,11 +230,6 @@ public class MainActivity extends AppCompatActivity {
                                 public void onPrepared(MediaPlayer mediaPlayer) {
                                     mp.start();
                                     //pDialog.dismiss();
-                                    try {
-                                        CurrentSong.setText(streamMeta.getStreamTitle());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
                                     isPlaying=false;
                                 }
                             });
@@ -255,14 +244,6 @@ public class MainActivity extends AppCompatActivity {
                     protected void onPostExecute(Void result) {
                         if (mp.isPlaying()) {
                             pDialog.dismiss();
-                            try {
-                                Log.i("Song",streamMeta.getStreamTitle());
-
-                                //CurrentSong.setVisibility(View.VISIBLE);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
 
                         }
                     }
@@ -303,10 +284,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 title_artist=streamMeta.getStreamTitle();
                 Log.e("Retrieved title_artist", title_artist);
-                if(title_artist.length()>0)
-                {
-                    //textView.setText(title_artist);
-                }
+
             }
             catch (IOException e)
             {
@@ -325,7 +303,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String title_artist=streamMeta.getStreamTitle();
                 Log.i("ARTIST TITLE", title_artist);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
