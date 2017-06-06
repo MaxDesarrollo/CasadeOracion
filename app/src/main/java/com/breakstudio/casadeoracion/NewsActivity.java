@@ -12,6 +12,10 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,6 +33,7 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -104,7 +109,7 @@ public class NewsActivity extends AppCompatActivity{
     private ListaPredicaAdapter listaPredicaAdapter;
 
 
-
+    private DrawerLayout drawer;
 
     //ListView lvPredica;
     //private RecyclerView recyclerView;
@@ -115,6 +120,7 @@ public class NewsActivity extends AppCompatActivity{
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         setStatusBarTranslucent(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
@@ -150,20 +156,24 @@ public class NewsActivity extends AppCompatActivity{
         rvCalendario = (RecyclerView) findViewById(R.id.rvCalendario);
         rvCalendario.setLayoutManager(lmCalendario);
 
+        //MARK: DRAWER LAYOUT SETUP
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.setScrimColor(Color.argb(165,255,255,255));
+        drawer.setDrawerElevation(0f);
+        //DRAWER LAYOUT SETUP END
 
         rvNews.setLayoutManager(layoutManager1);
+        rvNews.setNestedScrollingEnabled(false);
         rvNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy>0)
-                {
+                if (dy>0){
                     int VisibleItemCount = layoutManager1.getChildCount();
                     int totalItemCount = layoutManager1.getItemCount();
                     int pastVisibleItems = layoutManager1.findFirstVisibleItemPosition();
 
-                    if(aptoParaCargar)
-                    {
+                    if(aptoParaCargar){
                         if((VisibleItemCount + pastVisibleItems)>= totalItemCount)
                         {
                             Log.i(TAG,"Llegamos al final");
@@ -315,6 +325,7 @@ public class NewsActivity extends AppCompatActivity{
 
 
         }
+
         public  void CerrarElementos(){
             fab_predicas.startAnimation(FabClose);
             fab_imagenes.startAnimation(FabClose);
@@ -542,7 +553,6 @@ public class NewsActivity extends AppCompatActivity{
         int tardeFin = 18;
         int nocheFin = 24;
 
-
         //bienvenido.setText(hour);
         if(hora >= tardeInicio  && hora < tardeFin ){
             bienvenido.setText("Buenas Tardes ");
@@ -553,9 +563,21 @@ public class NewsActivity extends AppCompatActivity{
         }else if (hora >= nocheFin  && hora < tardeInicio ){
             bienvenido.setText("Buenos Dias");
         }
-
-
-
-
     }
+    //MARK: CERRAR LISTADO
+    public void cerrarListado(View view){
+        NewsActivity.super.onBackPressed();
+        //Intent intent = new Intent(this,MainActivity.class);
+        //startActivity(intent);
+    }
+    //CERRAR LISTADO END
+
+    //MARK: NUEVO FILTRO MENU
+    public void abrirFiltro(View view){
+        drawer.openDrawer(GravityCompat.END);
+    }
+    public void cerrarFiltro(View view){
+        drawer.closeDrawer(GravityCompat.END);
+    }
+    //NUEVO FILTRO MENU END
 }

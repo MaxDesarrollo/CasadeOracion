@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        metadataTask2 =new MetadataTask2();
+        metadataTask2 = new MetadataTask2();
         try {
             metadataTask2.execute(new URL(streamUrl));
         } catch (MalformedURLException e) {

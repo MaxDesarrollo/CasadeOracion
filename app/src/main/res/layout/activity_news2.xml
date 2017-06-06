@@ -89,17 +89,6 @@
                 android:minHeight="100dp"
                 android:background="@color/backgroundRadio"
                 android:gravity="top">
-                <Button
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:text="@string/close_string"
-                    android:id="@+id/btnCerrar"
-                    android:onClick="cerrarListado"
-                    android:textColor="@android:color/black"
-                    android:background="#fff"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    style="@style/loginButtonStyle"/>
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="70dp"
