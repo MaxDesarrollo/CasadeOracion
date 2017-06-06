@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     tools:context="com.breakstudio.casadeoracion.LoginActivity"
+    android:background="@android:color/darker_gray"
     >
     <ImageView
     android:layout_width="match_parent"
@@ -21,7 +22,10 @@
         android:src="@drawable/manantiallogo_2x"
         android:id="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp" />
+        android:layout_marginBottom="50dp"
+        android:layout_alignBottom="@+id/fbLoginButton"
+        android:layout_alignParentTop="true"
+        />
 
     <com.facebook.login.widget.LoginButton
         xmlns:fb="http://schemas.android.com/apk/res-auto"
@@ -31,6 +35,7 @@
         android:layout_marginBottom="25dp"
         android:layout_above="@+id/btnRegistro"
         android:layout_centerHorizontal="true"
+        android:paddingLeft="20dp"
         fb:com_facebook_login_text="@string/login_with_facebook"
         style="@style/loginButtonStyle"/>
 
@@ -51,10 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¿YA REGISTRADO? INGRESA AQUI"
-        android:textColor="@color/blackText"
+        android:textColor="@android:color/white"
         android:id="@+id/textView"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="50dp"
         android:layout_centerHorizontal="true"
         android:onClick="irIniciarSecion" />
 
