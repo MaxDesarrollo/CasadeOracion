@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.breakstudio.casadeoracion.SettingsActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/ivClose"
+                android:layout_width="35dp"
+                android:onClick="goMain"
+                android:layout_height="35dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="55dp"
+                android:text="X"
+                android:textColor="@color/fabMenu"
+                android:textSize="15dp"
+                android:background="@drawable/botton_redondo" />
+
+            <com.facebook.login.widget.ProfilePictureView
+                xmlns:fb="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ivPhotoUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:layout_below="@+id/ivClose"
+                android:layout_centerHorizontal="true"
+                fb:com_facebook_preset_size="large"/>
+
+            <TextView
+                android:id="@+id/tvNombreSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivPhotoUser"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="Nombre Completo Usuario"
+                android:textColor="@color/blackText"
+                android:textSize="25dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:text="CONFIGURACIONES"
+                    android:textSize="22dp"
+                    android:id="@+id/tvConfiguraciones"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvConfiguraciones"
+                    android:gravity="left"
+                    android:text="Notificaciones"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/tvNotificaciones"/>
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvNotificaciones"
+                    android:gravity="left"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="18dp"
+                    android:id="@+id/swNotificaciones"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvConfiguraciones"
+                    android:gravity="right"
+                    android:text="Reproducir Radio"
+                    android:textSize="18dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/tvRadioReproducir"/>
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvRadioReproducir"
+                    android:gravity="right"
+                    android:layout_marginLeft="280dp"
+                    android:layout_marginTop="18dp"
+                    android:id="@+id/swReproducirRadio"/>
+
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundRadio">
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

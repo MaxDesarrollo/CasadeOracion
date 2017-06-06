@@ -27,6 +27,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:onClick="Logout"/>
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/btnConfig"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="320dp"
+        android:background="@drawable/settings"
+        android:onClick="goSettings"/>
     <ImageButton
         android:layout_width="25dp"
         android:layout_height="25dp"

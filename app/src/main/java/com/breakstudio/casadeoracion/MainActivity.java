@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(Color.parseColor("#1e8bb3"));
 
         ///////Clases y Funciones para capturar titulo de current Song//////////
-        //http://rs3.radiostreamer.com:14900
+
         String streamUrl = "http://rs3.radiostreamer.com:14900";
 
         streamMeta = new IcyStreamMeta();
@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Timer timer = new Timer();
+        /*Timer timer = new Timer();
         MyTimerTask task = new MyTimerTask();
-        timer.schedule(task,100, 10000);
+        timer.schedule(task,100, 10000);*/
 
 
         ////////////////////////////
@@ -184,7 +184,13 @@ public class MainActivity extends AppCompatActivity {
                     mp.start();
                     isPlaying=false;
                     Cambiar(playBtn,true);
-
+                    try {
+                        Log.i("Song",streamMeta.getStreamTitle());
+                        CurrentSong.setText(streamMeta.getStreamTitle());
+                        //CurrentSong.setVisibility(View.VISIBLE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else{
                  AsyncTask<Void,Void,Void> task = new AsyncTask<Void, Void, Void>() {
@@ -230,6 +236,11 @@ public class MainActivity extends AppCompatActivity {
                                 public void onPrepared(MediaPlayer mediaPlayer) {
                                     mp.start();
                                     //pDialog.dismiss();
+                                    try {
+                                        CurrentSong.setText(streamMeta.getStreamTitle());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                     isPlaying=false;
                                 }
                             });
@@ -244,6 +255,14 @@ public class MainActivity extends AppCompatActivity {
                     protected void onPostExecute(Void result) {
                         if (mp.isPlaying()) {
                             pDialog.dismiss();
+                            try {
+                                Log.i("Song",streamMeta.getStreamTitle());
+
+                                //CurrentSong.setVisibility(View.VISIBLE);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
 
                         }
                     }
@@ -284,7 +303,10 @@ public class MainActivity extends AppCompatActivity {
             {
                 title_artist=streamMeta.getStreamTitle();
                 Log.e("Retrieved title_artist", title_artist);
-
+                if(title_artist.length()>0)
+                {
+                    //textView.setText(title_artist);
+                }
             }
             catch (IOException e)
             {
@@ -293,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class MyTimerTask extends TimerTask {
+    /*class MyTimerTask extends TimerTask {
         public void run() {
             try {
                 streamMeta.refreshMeta();
@@ -303,13 +325,14 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String title_artist=streamMeta.getStreamTitle();
                 Log.i("ARTIST TITLE", title_artist);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
         }
-    }
+    }*/
     @Override
     public void onBackPressed(){
         this.moveTaskToBack(true);
@@ -342,6 +365,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void goNews(View view) {
         Intent intent = new Intent(this,NewsActivity.class);
+        startActivity(intent);
+    }
+
+    public void goSettings(View view) {
+        Intent intent = new Intent(this,SettingsActivity.class);
         startActivity(intent);
     }
 
