@@ -6,7 +6,9 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -152,8 +154,16 @@ private WebView wvContent;
                 Contenido respuesta = response.body();
                     Content = respuesta.getContent().toString();
                     wvContent.loadData(Content, "text/html; charset=utf-8", "utf-8");
+                    wvContent.setScrollContainer(false);
+                    wvContent.setOnTouchListener(new View.OnTouchListener(){
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event){
+                            return (event.getAction() == MotionEvent.ACTION_MOVE);
+                        }
+                    });
+                    wvContent.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
                     Log.d("Contenido", Content);
-                    Log.e(TAG, "TodoBien" + respuesta.toString());
+                    Log.d(TAG, "TodoBien" + respuesta.toString());
 
             }
 

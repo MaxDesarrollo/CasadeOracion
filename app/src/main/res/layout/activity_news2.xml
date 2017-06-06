@@ -89,7 +89,6 @@
                 android:minHeight="100dp"
                 android:background="@color/backgroundRadio"
                 android:gravity="top">
-
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="70dp"
