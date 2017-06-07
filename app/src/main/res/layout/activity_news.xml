@@ -260,14 +260,9 @@
         android:maxWidth="80dp"
         android:layout_height="match_parent"
         android:background="#434142"
-        android:layout_gravity="end">
-        <ListView
-            android:id="@+id/navdrawer_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:choiceMode="singleChoice"
-            android:dividerHeight="0dp"
-            android:divider="@null"/>
+        android:layout_gravity="end"
+        app:menu="@menu/filtro_menu">
+
 
     </android.support.design.widget.NavigationView>
 

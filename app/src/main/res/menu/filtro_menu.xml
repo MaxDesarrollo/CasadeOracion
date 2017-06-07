@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/filtro_noticias"
+            android:icon="@drawable/noticiasblanco"
+            android:title="Noticias"/>
+        <item
+            android:id="@+id/filtro_galeria"
+            android:icon="@drawable/imagesiconwhite_1x"
+            android:title="Imagenes"/>
+        <item
+            android:id="@+id/filtro_videos"
+            android:icon="@drawable/videoiconwhite_1x"
+            android:title="Videos"/>
+        <item
+            android:id="@+id/filtro_calendario"
+            android:icon="@drawable/calendariconwhite_1x"
+            android:title="Calendario"/>
+        <item
+            android:id="@+id/filtro_predicas"
+            android:icon="@drawable/bibleiconwhite_1x"
+            android:title="Predicas"
+            />
+     </group>
+
+
+</menu>
