@@ -19,9 +19,11 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true">
-            <ScrollView android:layout_width="match_parent"
+            <ScrollView
+                android:id="@+id/mainScrollView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp">
+                android:layout_marginTop="105dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -31,16 +33,33 @@
                         android:text="DESTACADAS DE LA SEMANA"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="13dp"
-                        android:id="@+id/textView3"
+                        android:paddingTop="18dp"
+                        android:paddingBottom="18dp"
+                        android:paddingStart="13dp"
+                        android:paddingEnd="13dp"
+                        android:id="@+id/tituloDestacados"
                         android:layout_alignParentStart="true"
                         android:textColor="@color/backgroundRadio" />
-
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true">
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/btnFilterBlue"
+                            android:onClick="abrirFiltro"
+                            android:textColor="@color/backgroundRadio"
+                            android:background="@drawable/filtericon_1x"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp"
+                            style="@style/closeButton"/>
+                    </RelativeLayout>
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/rvDestacados"
-                        android:layout_below="@+id/textView3"
+                        android:layout_below="@+id/tituloDestacados"
                         android:layout_marginTop="0dp">
 
                     </android.support.v7.widget.RecyclerView>
@@ -48,37 +67,28 @@
                         android:text="ULTIMAS PUBLICACIONES"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="13dp"
-                        android:id="@+id/textView4"
+                        android:paddingTop="18dp"
+                        android:paddingBottom="18dp"
+                        android:paddingStart="13dp"
+                        android:paddingEnd="13dp"
+                        android:id="@+id/tituloListado"
                         android:textColor="@color/backgroundRadio"
                         android:layout_below="@+id/rvDestacados"/>
-
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvNews"
-                        android:layout_below="@+id/textView4"
+                        android:layout_below="@+id/tituloListado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"/>
-
-
-                    <!--<ListView
-                        android:layout_width="match_parent"
-                        android:id="@+id/lvNews"
-                        android:layout_below="@+id/textView4"
-                        android:layout_height="1000dp"
-                        android:dividerHeight="10dp"
-                        android:layout_marginBottom="80dp"
-                        android:divider="@null"
-                        tools:ignore="HardcodedText"/>-->
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvPredicas"
-                        android:layout_below="@+id/textView4"
+                        android:layout_below="@+id/tituloListado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"/>
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvCalendario"
-                        android:layout_below="@+id/textView4"
+                        android:layout_below="@+id/tituloListado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"/>
@@ -95,12 +105,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/header_container"
-                    android:minHeight="100dp"
+                    android:minHeight="105dp"
                     android:background="@color/backgroundRadio"
                     android:gravity="top">
                     <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="75dp"
+                        android:layout_height="80dp"
                         android:layout_marginTop="25dp">
                         <Button
                             android:layout_width="30dp"
@@ -112,23 +122,13 @@
                             android:background="@drawable/botton_redondo_blanco"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="20dp"
-                            style="@style/closeButton"/>
+                            android:fontFamily="sans-serif-light"
+                            style="@style/Base.Widget.AppCompat.Button.Borderless"/>
                     </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:adjustViewBounds="true"
-                        android:background="@android:color/transparent"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/antena"
-                        />
                     <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="75dp"
+                        android:layout_height="80dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginTop="25dp">
                         <Button
@@ -140,129 +140,135 @@
                             android:background="@drawable/filtericonwhite_2x"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="20dp"
+                            android:visibility="invisible"
                             style="@style/closeButton"/>
                     </RelativeLayout>
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:layout_below="@+id/imageView5">
-                        <TextView
-                            android:id="@+id/bienvenido"
-                            android:layout_width="wrap_content"
+                        android:layout_centerVertical="true">
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/antena"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Buen día"
-                            android:textColor="#FFF"
-                            android:layout_below="@+id/imageView5"/>
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_below="@+id/imageView5">
+                            <TextView
+                                android:id="@+id/bienvenido"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Buen día"
+                                android:textColor="#FFF"/>
+                            <TextView
+                                android:id="@+id/NombreUsuariotv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ramon"
+                                android:textAlignment="center"
+                                android:textColor="#FFF"
+                                android:layout_marginStart="5dp"/>
+                        </LinearLayout>
+                    </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/NombreUsuariotv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ramon"
-                            android:textAlignment="center"
-                            android:textColor="#FFF"
-                            android:layout_marginStart="5dp"
-                            android:layout_alignEnd="@+id/bienvenido"
-                            android:layout_below="@+id/imageView5"/>
-                    </LinearLayout>
 
                 </RelativeLayout>
-                <android.support.design.widget.FloatingActionButton
+                <Button
                     android:id="@+id/fab_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginBottom="20dp"
                     android:layout_marginEnd="@dimen/fab_margin_right"
-                    android:src="@drawable/menuiconblue_2x"
+                    android:background="@drawable/menu_boton_redondo"
                     android:scaleType="fitCenter"
                     android:visibility="visible"
-                    app:backgroundTint="@android:color/white"
-                    app:pressedTranslationZ="12dp"
                     android:longClickable="false"
-                    />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_videos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/videoiconwhite_3x"
-                    android:visibility="invisible"
-                    app:backgroundTint="@color/fabBack"
-
-                    android:layout_above="@+id/fab_menu"
-                    android:layout_marginBottom="@dimen/fab_item_margin_bottom"
-                    android:layout_alignEnd="@+id/fab_menu"
-                    />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_predicas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/bibleiconwhite_2x"
-                    android:visibility="invisible"
-                    app:backgroundTint="@color/fabBack"
-                    app:pressedTranslationZ="12dp"
-
-                    android:layout_above="@+id/fab_videos"
-                    android:layout_marginBottom="@dimen/fab_item_margin_bottom"
-                    android:layout_alignEnd="@+id/fab_menu"
-                    />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_calendario"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/calendariconwhite_3x"
-                    android:visibility="invisible"
-                    app:backgroundTint="@color/fabBack"
-                    app:pressedTranslationZ="12dp"
-
-                    android:layout_above="@+id/fab_predicas"
-                    android:layout_marginBottom="@dimen/fab_item_margin_bottom"
-                    android:layout_alignEnd="@+id/fab_menu"/>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_imagenes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/imagesiconwhite_3x"
-                    android:visibility="invisible"
-                    app:backgroundTint="@color/fabBack"
-                    app:pressedTranslationZ="12dp"
-
-                    android:layout_above="@+id/fab_calendario"
-                    android:layout_marginBottom="@dimen/fab_item_margin_bottom"
-                    android:layout_alignEnd="@+id/fab_menu"/>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_noticias"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/newsiconwhite_3x"
-                    android:visibility="invisible"
-                    app:backgroundTint="@color/fabBack"
-                    app:pressedTranslationZ="12dp"
-
-                    android:layout_above="@+id/fab_imagenes"
-                    android:layout_marginBottom="@dimen/fab_item_margin_bottom"
-                    android:layout_alignEnd="@+id/fab_menu"/>
+                    android:onClick="abrirSettings"/>
             </RelativeLayout>
         </RelativeLayout>
 
     </RelativeLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:maxWidth="80dp"
         android:layout_height="match_parent"
-        android:background="#434142"
-        android:layout_gravity="end"
-        app:menu="@menu/filtro_menu">
-
+        android:background="#333333"
+        android:layout_gravity="end">
+        <RelativeLayout
+            android:id="@+id/filterContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="24dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="end">
+            <TextView
+                android:id="@+id/filtroCerrar"
+                android:tag="filtroCerrar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="#434142"
+                android:text="@string/close_string"
+                android:fontFamily="sans-serif-light"
+                android:textAlignment="center"
+                android:onClick="cerrarFiltro"
+                android:textSize="30sp"
+                android:gravity="center"
+                android:clickable="true"
+                android:textColor="@android:color/white"/>
+            <TextView
+                android:id="@+id/filtroNoticias"
+                android:tag="filtroNoticias"
+                android:onClick="manejarFiltro"
+                android:text="Noticias"
+                android:layout_below="@id/filtroCerrar"
+                android:drawableTop="@drawable/newsiconwhite_1x"
+                style="@style/filterButton"/>
+            <TextView
+                android:id="@+id/filtroImagenes"
+                android:tag="filtroImagenes"
+                android:onClick="manejarFiltro"
+                android:text="Imagenes"
+                android:layout_below="@id/filtroNoticias"
+                android:drawableTop="@drawable/imagesiconwhite_1x"
+                style="@style/filterButton"/>
+            <TextView
+                android:id="@+id/filtroCalendario"
+                android:tag="filtroCalendario"
+                android:onClick="manejarFiltro"
+                android:text="Calendario"
+                android:layout_below="@id/filtroImagenes"
+                android:drawableTop="@drawable/calendariconwhite_1x"
+                style="@style/filterButton"/>
+            <TextView
+                android:id="@+id/filtroPredicas"
+                android:tag="filtroPredicas"
+                android:onClick="manejarFiltro"
+                android:text="Predicas"
+                android:layout_below="@id/filtroCalendario"
+                android:drawableTop="@drawable/bibleiconwhite_1x"
+                style="@style/filterButton"/>
+            <TextView
+                android:id="@+id/filtroVideos"
+                android:tag="filtroVideos"
+                android:onClick="manejarFiltro"
+                android:text="Videos"
+                android:layout_below="@id/filtroPredicas"
+                android:drawableTop="@drawable/videoiconwhite_1x"
+                style="@style/filterButton"/>
+        </RelativeLayout>
 
     </android.support.design.widget.NavigationView>
 

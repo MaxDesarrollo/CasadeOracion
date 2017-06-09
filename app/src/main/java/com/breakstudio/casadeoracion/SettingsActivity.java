@@ -1,9 +1,12 @@
 package com.breakstudio.casadeoracion;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.facebook.Profile;
@@ -31,15 +34,14 @@ public class SettingsActivity extends AppCompatActivity {
             String email = Firebaseuser.getEmail();
             tvNombreSettings.setText(name);
 
-            Profile profile = Profile.getCurrentProfile();
+            /*Profile profile = Profile.getCurrentProfile();
             //profile.getProfilePictureUri(200,200);
             String id = profile.getId();
-            profilePictureView.setProfileId(id);
+            profilePictureView.setProfileId(id);*/
         }
     }
 
-    public void goMain(View view){
-        Intent i = new Intent(this,MainActivity.class);
-        startActivity(i);
+    public void cerrarSettings(View view){
+        SettingsActivity.super.onBackPressed();
     }
 }

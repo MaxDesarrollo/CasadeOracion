@@ -19,9 +19,9 @@
 
             <Button
                 android:id="@+id/ivClose"
-                android:layout_width="35dp"
-                android:onClick="goMain"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:onClick="cerrarSettings"
+                android:layout_height="30dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="55dp"
