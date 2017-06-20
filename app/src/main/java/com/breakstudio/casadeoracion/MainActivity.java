@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         ///////Clases y Funciones para capturar titulo de current Song//////////
 
-        String streamUrl = "http://rs3.radiostreamer.com:14900";
+        String streamUrl = "http://66.85.88.174/hot108";
 
         streamMeta = new IcyStreamMeta();
         try {
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    final String url ="http://rs3.radiostreamer.com:14900";
+                    final String url ="http://66.85.88.174/hot108";
                     //Stream Manantial
                     //http://78.129.187.73:4138
                     // Stream Prueba reproduccion
@@ -257,7 +257,9 @@ public class MainActivity extends AppCompatActivity {
                             pDialog.dismiss();
                             try {
                                 Log.i("Song",streamMeta.getStreamTitle());
-
+                                Timer timer = new Timer();
+                                MyTimerTask task = new MyTimerTask();
+                                timer.schedule(task,100, 10000);
                                 //CurrentSong.setVisibility(View.VISIBLE);
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -274,11 +276,13 @@ public class MainActivity extends AppCompatActivity {
                 mp.pause();
                 isPlaying=true;
                 Cambiar(playBtn,false);
+                CurrentSong.setText("");
             }
             }
         });
 
     }
+
     protected class MetadataTask2 extends AsyncTask<URL, Void, IcyStreamMeta>
     {
         @Override
@@ -315,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*class MyTimerTask extends TimerTask {
+    class MyTimerTask extends TimerTask {
         public void run() {
             try {
                 streamMeta.refreshMeta();
@@ -323,8 +327,15 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             try {
-                String title_artist=streamMeta.getStreamTitle();
+                final String title_artist=streamMeta.getStreamTitle();
                 Log.i("ARTIST TITLE", title_artist);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mp.isPlaying())
+                            CurrentSong.setText(title_artist);
+                    }
+                });
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -332,7 +343,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-    }*/
+    }
+
     @Override
     public void onBackPressed(){
         this.moveTaskToBack(true);
@@ -353,8 +365,6 @@ public class MainActivity extends AppCompatActivity {
             btn.setImageResource(R.drawable.playbutton_1x);
         }
     }
-
-
     private void shareIt(){
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
@@ -362,17 +372,14 @@ public class MainActivity extends AppCompatActivity {
         shareIntent.setType("text/plain");
         startActivity(shareIntent);
     }
-
     public void goNews(View view) {
         Intent intent = new Intent(this,NewsActivity.class);
         startActivity(intent);
     }
-
     public void goSettings(View view) {
         Intent intent = new Intent(this,SettingsActivity.class);
         startActivity(intent);
     }
-
     public void Logout(View view) {
         FirebaseAuth.getInstance().signOut();
         goLoginScreen();
