@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
         ///////Clases y Funciones para capturar titulo de current Song//////////
 
-        String streamUrl = "http://rs3.radiostreamer.com:14900";
+        String streamUrl = "http://66.85.88.174/hot108";
+        //String streamUrl = "http://78.129.187.73:4138";
 
         streamMeta = new IcyStreamMeta();
         try {
@@ -219,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    final String url ="http://rs3.radiostreamer.com:14900";
+                    final String url ="http://66.85.88.174/hot108";
                     //Stream Manantial
                     //http://78.129.187.73:4138
                     // Stream Prueba reproduccion
