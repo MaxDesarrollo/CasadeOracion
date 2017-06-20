@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
         ///////Clases y Funciones para capturar titulo de current Song//////////
 
         String streamUrl = "http://66.85.88.174/hot108";
+<<<<<<< HEAD
+=======
+        //String streamUrl = "http://78.129.187.73:4138";
+>>>>>>> 79544a5b8aff222166d80fbba81e5217bee8ba20
 
         streamMeta = new IcyStreamMeta();
         try {
