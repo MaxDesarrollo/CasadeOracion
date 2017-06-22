@@ -1,13 +1,19 @@
 package com.breakstudio.casadeoracion;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
+//import com.breakstudio.casadeoracion.MediaPlayerService;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.media.session.MediaController;
+import android.media.session.MediaSession;
+import android.media.session.MediaSessionManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +33,7 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,6 +50,9 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     MediaPlayer mp = new MediaPlayer();
+    private MediaSessionManager mManager;
+    private MediaSession mSession;
+    private MediaController mController;
     private  final String Tag="Data";
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -66,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        /*Intent intent = new Intent( getApplicationContext(), MediaPlayerService.class );
+        intent.setAction( MediaPlayerService.ACTION_PLAY );
+        startService( intent );*/
         //Configura el color del statusbar onCreate
         Window window = MainActivity.this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -93,12 +105,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        /*Timer timer = new Timer();
-        MyTimerTask task = new MyTimerTask();
-        timer.schedule(task,100, 10000);*/
-
 
         ////////////////////////////
+               //creacion de elementos para poder tener el reproductor media en lockscreen y notification
+
 
 
 
@@ -391,5 +401,6 @@ public class MainActivity extends AppCompatActivity {
         goLoginScreen();
 
     }
+
 
 }
