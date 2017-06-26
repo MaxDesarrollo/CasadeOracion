@@ -12,5 +12,5 @@ import retrofit2.http.Query;
 
 public interface AlbumArtService {
     @GET("search")
-    Call<AlbumArtRespuesta> getAlbumArt(@Query("term") String term);
+    Call<AlbumArtRespuesta> getAlbumArt(@Query("term") String term,@Query("limit") int limit);
 }

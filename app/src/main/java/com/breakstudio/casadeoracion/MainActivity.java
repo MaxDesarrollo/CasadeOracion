@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
     public  void obtenerAlbumArt(String term){
         AlbumArtService albumArtService = retrofitAlbum.create(AlbumArtService.class);
         //Call<List<Post>> Call = service.getAllPost("true", page);
-        final Call<AlbumArtRespuesta> respuesta =albumArtService.getAlbumArt(term);
+        final Call<AlbumArtRespuesta> respuesta =albumArtService.getAlbumArt(term,1);
         respuesta.enqueue(new Callback<AlbumArtRespuesta>() {
             @Override
             public void onResponse(Call<AlbumArtRespuesta> call, Response<AlbumArtRespuesta> response) {
