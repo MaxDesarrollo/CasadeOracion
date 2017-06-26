@@ -365,7 +365,7 @@ public class NewsActivity extends AppCompatActivity{
 
     }
 
-        private  void obtenerPredicas(){
+    private  void obtenerPredicas(){
             PostService service = retrofit.create(PostService.class);
             Call<List<Post>> predicaRespuestaCall = service.obtenerPredicas();
             predicaRespuestaCall.enqueue(new Callback<List<Post>>() {
@@ -406,13 +406,13 @@ public class NewsActivity extends AppCompatActivity{
         });
     }
 
-        public int pxToDp(int px) {
+    public int pxToDp(int px) {
             float density = NewsActivity.this.getResources()
                     .getDisplayMetrics()
                     .density;
             return Math.round((float) px / density);
         }
-        public int dpToPx(int dp) {
+    public int dpToPx(int dp) {
             float density = NewsActivity.this.getResources()
                     .getDisplayMetrics()
                     .density;

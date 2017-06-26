@@ -47,6 +47,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class MainActivity extends AppCompatActivity {
     MediaPlayer mp = new MediaPlayer();
@@ -71,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private MetadataTask2 metadataTask2;
     private String title_artist;
     private TextView CurrentSong;
+    private Retrofit retrofitAlbum;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -110,8 +117,14 @@ public class MainActivity extends AppCompatActivity {
                //creacion de elementos para poder tener el reproductor media en lockscreen y notification
 
 
-
-
+        ///////////////////////////
+            //Obtener Album Art
+        retrofitAlbum = new Retrofit.Builder()
+                .baseUrl("https://itunes.apple.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        String param="eminem rap god";
+        obtenerAlbumArt(param);
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -298,6 +311,38 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    public  void obtenerAlbumArt(String term){
+        AlbumArtService albumArtService = retrofitAlbum.create(AlbumArtService.class);
+        //Call<List<Post>> Call = service.getAllPost("true", page);
+        final Call<AlbumArtRespuesta> respuesta =albumArtService.getAlbumArt(term);
+        respuesta.enqueue(new Callback<AlbumArtRespuesta>() {
+            @Override
+            public void onResponse(Call<AlbumArtRespuesta> call, Response<AlbumArtRespuesta> response) {
+                if (response.isSuccessful()) {
+                    AlbumArtRespuesta albumArtRespuesta =response.body();
+                    ArrayList<AlbumArt> listaAlbumArt = albumArtRespuesta.getResults();
+
+                    for (int i = 0; i < listaAlbumArt.size(); i++) {
+                        AlbumArt Aa= listaAlbumArt.get(i);
+                        Log.i("AlbumArt","URL: "+Aa.getArtworkUrl100());
+
+                    }
+
+                }else{
+                    Log.e("Error", "onResponse "+response.errorBody());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AlbumArtRespuesta> call, Throwable t) {
+                Log.e("onFailureItunes",t.getCause().toString());
+            }
+        });
+
+
+    }
+
 
     protected class MetadataTask2 extends AsyncTask<URL, Void, IcyStreamMeta>
     {
