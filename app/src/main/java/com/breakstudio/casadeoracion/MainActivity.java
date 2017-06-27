@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        ////////////////////////////
+        ///////////////////////////
                //creacion de elementos para poder tener el reproductor media en lockscreen y notification
 
 
