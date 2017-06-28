@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView CurrentSong;
     private Retrofit retrofitAlbum;
     private String fullsong = " ";
+    private String fullFinalSong="";
+    private String urlArt="";
+
     ImageView imageViewFondo;
 
 
@@ -221,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Log.i("Song",streamMeta.getStreamTitle());
                         CurrentSong.setText(streamMeta.getStreamTitle());
-                        //CurrentSong.setVisibility(View.VISIBLE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -319,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public  void obtenerAlbumArt(String term){
+    public  String obtenerAlbumArt(String term){
         AlbumArtService albumArtService = retrofitAlbum.create(AlbumArtService.class);
         //Call<List<Post>> Call = service.getAllPost("true", page);
         final Call<AlbumArtRespuesta> respuesta =albumArtService.getAlbumArt(term,1);
@@ -333,24 +335,27 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < listaAlbumArt.size(); i++) {
                         AlbumArt Aa= listaAlbumArt.get(i);
                         Log.i("AlbumArt","URL: "+Aa.getArtworkUrl100());
-                        String url = Aa.getArtworkUrl100();
-                        Log.i("AlbumArtURLFINAL","URL: "+url);
+                        urlArt = Aa.getArtworkUrl100();
+                        Log.i("AlbumArtURLFINAL","URL: "+urlArt);
 
-                        Context context = getApplicationContext();
+                       /* Context context = getApplicationContext();
                         Glide.with(context)
-                                .load(url)
+                                .load(urlArt)
                                 .centerCrop()
                                 .crossFade()
                                 .dontAnimate()
                                 //.fitCenter()
                                 //.dontTransform()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL);
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(imageViewFondo);*/
+
 
 
                     }
 
                 }else{
                     Log.e("Error", "onResponse "+response.errorBody());
+                    urlArt="Error Request";
                 }
 
             }
@@ -358,13 +363,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<AlbumArtRespuesta> call, Throwable t) {
                 Log.e("onFailureItunes",t.getCause().toString());
+                urlArt=t.getCause().toString();
             }
         });
 
-
+        return urlArt;
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     protected class MetadataTask2 extends AsyncTask<URL, Void, IcyStreamMeta>
     {
         @Override
@@ -405,13 +412,13 @@ public class MainActivity extends AppCompatActivity {
                     String[] parts = fullsong.split("-");
                     String artist = parts[0];
                     String song = parts[1];
-                    String fullFinalSong = artist + " " + song;
+                    fullFinalSong = artist + " " + song;
                     Log.e("Retrieved Artist", artist);
                     Log.e("Retrieved Song", song);
                     Log.e("Retrieved FinalFullSOng", fullFinalSong);
 
                     //Mandar cancion sin " " como parametro para obtener AlbumArt
-                    obtenerAlbumArt(fullFinalSong);
+                    //obtenerAlbumArt(fullFinalSong);
                 }
             }
             catch (IOException e)
@@ -431,13 +438,33 @@ public class MainActivity extends AppCompatActivity {
             try {
                 final String title_artist=streamMeta.getStreamTitle();
                 Log.i("ARTIST TITLE", title_artist);
-
-
+                String[] parts = title_artist.split("-");
+                String artist = parts[0];
+                String song = parts[1];
+                fullFinalSong = artist + " " + song;
+                Log.i("FULL FINAL SONG", fullFinalSong);
+                String Arte=obtenerAlbumArt(fullFinalSong);
+                Log.i("URLART SONG", Arte);
+                //Arte="";
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (mp.isPlaying())
+                        if (mp.isPlaying()){
                             CurrentSong.setText(title_artist);
+                            Context context = getApplicationContext();
+                           /* if(!urlArt.equals(" "))
+                                {
+                                Glide.with(context)
+                                        .load(urlArt)
+                                        .centerCrop()
+                                        .crossFade()
+                                        .dontAnimate()
+                                        //.fitCenter()
+                                        //.dontTransform()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .into(imageViewFondo);
+                                }*/
+                        }
                     }
                 });
 
