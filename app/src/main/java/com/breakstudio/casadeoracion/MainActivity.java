@@ -17,6 +17,7 @@ import android.media.session.MediaSessionManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -25,11 +26,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
     private String title_artist;
     private TextView CurrentSong;
     private Retrofit retrofitAlbum;
+    private String fullsong = " ";
+    ImageView imageViewFondo;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -95,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         ///////Clases y Funciones para capturar titulo de current Song//////////
 
         String streamUrl = "http://66.85.88.174/hot108";
+        imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
 
         //String streamUrl = "http://78.129.187.73:4138";
 
@@ -123,8 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl("https://itunes.apple.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        String param="eminem rap god";
-        obtenerAlbumArt(param);
+
+
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -325,6 +333,19 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < listaAlbumArt.size(); i++) {
                         AlbumArt Aa= listaAlbumArt.get(i);
                         Log.i("AlbumArt","URL: "+Aa.getArtworkUrl100());
+                        String url = Aa.getArtworkUrl100();
+                        Log.i("AlbumArtURLFINAL","URL: "+url);
+
+                        Context context = getApplicationContext();
+                        Glide.with(context)
+                                .load(url)
+                                .centerCrop()
+                                .crossFade()
+                                .dontAnimate()
+                                //.fitCenter()
+                                //.dontTransform()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
 
                     }
 
@@ -366,11 +387,31 @@ public class MainActivity extends AppCompatActivity {
         {
             try
             {
+
                 title_artist=streamMeta.getStreamTitle();
+
                 Log.e("Retrieved title_artist", title_artist);
+
+
+
                 if(title_artist.length()>0)
                 {
                     //textView.setText(title_artist);
+
+                    //Split Full song, mandar parametros a ObtenerAlbumArt();
+                    fullsong = streamMeta.getStreamTitle();
+                    Log.e("Retrieved fullsong", fullsong);
+                    //Separar donde hay "-" por " "
+                    String[] parts = fullsong.split("-");
+                    String artist = parts[0];
+                    String song = parts[1];
+                    String fullFinalSong = artist + " " + song;
+                    Log.e("Retrieved Artist", artist);
+                    Log.e("Retrieved Song", song);
+                    Log.e("Retrieved FinalFullSOng", fullFinalSong);
+
+                    //Mandar cancion sin " " como parametro para obtener AlbumArt
+                    obtenerAlbumArt(fullFinalSong);
                 }
             }
             catch (IOException e)
@@ -390,6 +431,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 final String title_artist=streamMeta.getStreamTitle();
                 Log.i("ARTIST TITLE", title_artist);
+
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
