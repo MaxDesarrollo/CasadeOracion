@@ -48,6 +48,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private String fullsong = " ";
     private String fullFinalSong="";
     private String urlArt="";
+    private String pivote="";
 
     ImageView imageViewFondo;
 
@@ -321,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public  String obtenerAlbumArt(String term){
+    public  void obtenerAlbumArt(String term){
         AlbumArtService albumArtService = retrofitAlbum.create(AlbumArtService.class);
         //Call<List<Post>> Call = service.getAllPost("true", page);
         final Call<AlbumArtRespuesta> respuesta =albumArtService.getAlbumArt(term,1);
@@ -338,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                         urlArt = Aa.getArtworkUrl100();
                         Log.i("AlbumArtURLFINAL","URL: "+urlArt);
 
-                       /* Context context = getApplicationContext();
+                      /*  Context context = getApplicationContext();
                         Glide.with(context)
                                 .load(urlArt)
                                 .centerCrop()
@@ -346,8 +348,8 @@ public class MainActivity extends AppCompatActivity {
                                 .dontAnimate()
                                 //.fitCenter()
                                 //.dontTransform()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(imageViewFondo);*/
+                                .diskCacheStrategy(DiskCacheStrategy.ALL);
+                                //.into(imageViewFondo);*/
 
 
 
@@ -355,7 +357,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }else{
                     Log.e("Error", "onResponse "+response.errorBody());
-                    urlArt="Error Request";
                 }
 
             }
@@ -363,11 +364,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<AlbumArtRespuesta> call, Throwable t) {
                 Log.e("onFailureItunes",t.getCause().toString());
-                urlArt=t.getCause().toString();
             }
         });
 
-        return urlArt;
+
     }
 
 
@@ -409,12 +409,9 @@ public class MainActivity extends AppCompatActivity {
                     fullsong = streamMeta.getStreamTitle();
                     Log.e("Retrieved fullsong", fullsong);
                     //Separar donde hay "-" por " "
-                    String[] parts = fullsong.split("-");
-                    String artist = parts[0];
-                    String song = parts[1];
-                    fullFinalSong = artist + " " + song;
-                    Log.e("Retrieved Artist", artist);
-                    Log.e("Retrieved Song", song);
+
+                   /* Log.e("Retrieved Artist", artist);
+                    Log.e("Retrieved Song", song);*/
                     Log.e("Retrieved FinalFullSOng", fullFinalSong);
 
                     //Mandar cancion sin " " como parametro para obtener AlbumArt
@@ -427,7 +424,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
+    public String fullSong (String cancion){
+        String[] parts = cancion.split("-");
+        String artist = parts[0];
+        String song = parts[1];
+        String fullSong = artist + " " + song;
+        return fullSong;
+    }
     class MyTimerTask extends TimerTask {
         public void run() {
             try {
@@ -438,32 +441,21 @@ public class MainActivity extends AppCompatActivity {
             try {
                 final String title_artist=streamMeta.getStreamTitle();
                 Log.i("ARTIST TITLE", title_artist);
-                String[] parts = title_artist.split("-");
-                String artist = parts[0];
-                String song = parts[1];
-                fullFinalSong = artist + " " + song;
-                Log.i("FULL FINAL SONG", fullFinalSong);
-                String Arte=obtenerAlbumArt(fullFinalSong);
-                Log.i("URLART SONG", Arte);
-                //Arte="";
+
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (mp.isPlaying()){
-                            CurrentSong.setText(title_artist);
-                            Context context = getApplicationContext();
-                           /* if(!urlArt.equals(" "))
-                                {
-                                Glide.with(context)
-                                        .load(urlArt)
-                                        .centerCrop()
-                                        .crossFade()
-                                        .dontAnimate()
-                                        //.fitCenter()
-                                        //.dontTransform()
-                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                        .into(imageViewFondo);
-                                }*/
+
+                            String Cancion=fullSong(title_artist);
+                            CurrentSong.setText(Cancion);
+                            if(!Objects.equals(Cancion, pivote)){
+                            obtenerAlbumArt(Cancion);
+                            pivote=Cancion;
+                            Log.i("URLAlbumFoto","Dice: "+urlArt);
+                            }
+                            Log.i("URLAlbumConstante","Dice: "+urlArt);
                         }
                     }
                 });
