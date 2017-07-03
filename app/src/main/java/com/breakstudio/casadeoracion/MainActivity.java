@@ -14,12 +14,14 @@ import android.media.MediaPlayer;
 import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private String fullFinalSong="";
     private String urlArt="";
     private String pivote="";
+    private ImageView albumView;
 
     ImageView imageViewFondo;
 
@@ -107,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         String streamUrl = "http://66.85.88.174/hot108";
         imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
+        albumView = (ImageView) findViewById(R.id.albumView);
 
         //String streamUrl = "http://78.129.187.73:4138";
 
@@ -209,119 +213,144 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if(isOnline()){
+            Log.d("Online","Estoy Online");
+        }else{
+            Log.d("Online","Estoy OFFline");
 
+        }
         //Play a la radio
         playBtn = (ImageButton)findViewById(R.id.play);
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-               // Cambiar(playBtn);
-            if(!mp.isPlaying() || isPlaying) {
-                if(isPlaying){
-                    mp.start();
-                    isPlaying=false;
-                    Cambiar(playBtn,true);
-                    try {
-                        Log.i("Song",streamMeta.getStreamTitle());
-                        CurrentSong.setText(streamMeta.getStreamTitle());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else{
-                 AsyncTask<Void,Void,Void> task = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected void onPreExecute() {
-                        pDialog.setTitle("Conectando...");
-                        pDialog.setMessage("Por favor, espere.");
-                        pDialog.setCancelable(true);
-                        pDialog.setIndeterminate(true);
-
-                        pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if(mp.isLooping() || mp.isPlaying()){
-                                mp.stop();
-                                //Cambiar(playBtn,false);
-                            }
-                            isPlaying=true;
-                            Cambiar(playBtn,false);
-                            Toast.makeText(getApplication(),"Se cancelo el servicio",Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    pDialog.show();
-                    Cambiar(playBtn,true);
-                }
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    final String url ="http://66.85.88.174/hot108";
-                    //Stream Manantial
-                    //http://78.129.187.73:4138
-                    // Stream Prueba reproduccion
-                    //http://66.85.88.174/hot108
-                    // Stream Prueba meta data
-                    //http://rs3.radiostreamer.com:14900
-
+            if(isOnline()) {
+                // Cambiar(playBtn);
+                if (!mp.isPlaying() || isPlaying) {
+                    if (isPlaying) {
+                        mp.start();
+                        isPlaying = false;
+                        Cambiar(playBtn, true);
                         try {
-                            mp.setDataSource(url);
-                            mp.prepare();
-                            mp.setVolume(50,50);
-                            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                @Override
-                                public void onPrepared(MediaPlayer mediaPlayer) {
-                                    mp.start();
-                                    //pDialog.dismiss();
-                                    try {
-                                        Timer timer = new Timer();
-                                        MyTimerTask task = new MyTimerTask();
-                                        timer.schedule(task,100, 10000);
-                                        CurrentSong.setText(streamMeta.getStreamTitle());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    isPlaying=false;
-                                }
-                            });
-
+                            Log.i("Song", streamMeta.getStreamTitle());
+                            CurrentSong.setText(streamMeta.getStreamTitle());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    } else {
+                        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected void onPreExecute() {
+                                pDialog.setTitle("Conectando...");
+                                pDialog.setMessage("Por favor, espere.");
+                                pDialog.setCancelable(true);
+                                pDialog.setIndeterminate(true);
 
-                    return null;
-                }
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        if (mp.isPlaying()) {
-                            pDialog.dismiss();
-                            try {
-                                Log.i("Song",streamMeta.getStreamTitle());
-                                Timer timer = new Timer();
-                                MyTimerTask task = new MyTimerTask();
-                                timer.schedule(task,100, 10000);
-                                //CurrentSong.setVisibility(View.VISIBLE);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                                pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (mp.isLooping() || mp.isPlaying()) {
+                                            mp.stop();
+                                            //Cambiar(playBtn,false);
+                                        }
+                                        mp.stop();
+                                        isPlaying = true;
+                                        Cambiar(playBtn, false);
+                                        Toast.makeText(getApplication(), "Se cancelo el servicio", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                                pDialog.show();
+                                Cambiar(playBtn, true);
                             }
 
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+                                mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                                final String url = "http://66.85.88.174/hot108";
+                                //Stream Manantial
+                                //http://78.129.187.73:4138
+                                // Stream Prueba reproduccion
+                                //http://66.85.88.174/hot108
+                                // Stream Prueba meta data
+                                //http://rs3.radiostreamer.com:14900
 
-                        }
+                                try {
+                                    mp.setDataSource(url);
+                                    mp.prepare();
+                                    mp.setVolume(50, 50);
+                                    mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                        @Override
+                                        public void onPrepared(MediaPlayer mediaPlayer) {
+                                            mp.start();
+                                            //pDialog.dismiss();
+                                            try {
+                                                Timer timer = new Timer();
+                                                MyTimerTask task = new MyTimerTask();
+                                                timer.schedule(task, 100, 10000);
+                                                CurrentSong.setText(streamMeta.getStreamTitle());
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            isPlaying = false;
+                                        }
+                                    });
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void result) {
+                                if (mp.isPlaying()) {
+                                    pDialog.dismiss();
+                                    try {
+                                        Log.i("Song", streamMeta.getStreamTitle());
+                                        Timer timer = new Timer();
+                                        MyTimerTask task = new MyTimerTask();
+                                        timer.schedule(task, 100, 10000);
+                                        //CurrentSong.setVisibility(View.VISIBLE);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            }
+                        };
+
+                        if (!mp.isPlaying())
+                            task.execute((Void[]) null);
                     }
-                };
-
-                if(!mp.isPlaying())
-                    task.execute((Void[])null);}
-            }else{
-                mp.pause();
-                isPlaying=true;
-                Cambiar(playBtn,false);
-                CurrentSong.setText("");
+                } else {
+                    mp.pause();
+                    isPlaying = true;
+                    Cambiar(playBtn, false);
+                    CurrentSong.setText("");
+                }
             }
+            else
+                {
+                  Toast.makeText(getApplicationContext(),"Revise su conexion a internet",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+    }
+    private boolean isOnline()
+    {
+        try
+        {
+            ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
     public  void obtenerAlbumArt(String term){
         AlbumArtService albumArtService = retrofitAlbum.create(AlbumArtService.class);
@@ -425,10 +454,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public String fullSong (String cancion){
-        String[] parts = cancion.split("-");
+        Log.i("Cancion Entrante", title_artist);
+
+        String fullSong= cancion.replaceAll("^[^a-zA-Z0-9\\s]$","");
+        Log.i("Cancion sin simbolos", title_artist);
+
+        String[] parts = fullSong.split("-");
         String artist = parts[0];
         String song = parts[1];
-        String fullSong = artist + " " + song;
+        fullSong = artist + " " + song;
+        Log.i("Cancion sin -", title_artist);
+
+
         return fullSong;
     }
     class MyTimerTask extends TimerTask {
@@ -449,13 +486,23 @@ public class MainActivity extends AppCompatActivity {
                         if (mp.isPlaying()){
 
                             String Cancion=fullSong(title_artist);
+                            Log.i("FullSongo","Dice: "+Cancion);
+
                             CurrentSong.setText(Cancion);
-                            if(!Objects.equals(Cancion, pivote)){
-                            obtenerAlbumArt(Cancion);
-                            pivote=Cancion;
-                            Log.i("URLAlbumFoto","Dice: "+urlArt);
+                            if(!Objects.equals(Cancion, pivote)) {
+                                obtenerAlbumArt(Cancion);
+                                pivote = Cancion;
+                                Log.i("URLAlbumFoto", "Dice: " + urlArt);
                             }
-                            Log.i("URLAlbumConstante","Dice: "+urlArt);
+                            /*Glide.with(getApplicationContext())
+                                    .load(urlArt)
+                                    .fitCenter()
+                                    .crossFade()
+                                    .dontAnimate()
+                                    .dontTransform()
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(albumView);
+                            Log.i("URLAlbumConstante","Dice: "+urlArt);*/
                         }
                     }
                 });
