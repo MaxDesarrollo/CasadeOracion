@@ -1,5 +1,6 @@
 package com.breakstudio.casadeoracion;
 
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -18,6 +19,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton playBtn;
     private SeekBar Volumen;
     private boolean isPlaying=false;
+    private boolean initialStage=true;
     private AudioManager audioManager;
     //Lista de para las canciones y adaptador
     private ListView lvCancion;
@@ -97,9 +100,7 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*Intent intent = new Intent( getApplicationContext(), MediaPlayerService.class );
-        intent.setAction( MediaPlayerService.ACTION_PLAY );
-        startService( intent );*/
+
         //Configura el color del statusbar onCreate
         Window window = MainActivity.this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -139,9 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl("https://itunes.apple.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
-
-
+        //Obtener nombre del logueado
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -223,122 +222,87 @@ public class MainActivity extends AppCompatActivity {
         playBtn = (ImageButton)findViewById(R.id.play);
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-            if(isOnline()) {
-                // Cambiar(playBtn);
-                if (!mp.isPlaying() || isPlaying) {
-                    if (isPlaying) {
-                        mp.start();
-                        isPlaying = false;
-                        Cambiar(playBtn, true);
-                        try {
-                            Log.i("Song", streamMeta.getStreamTitle());
-                            CurrentSong.setText(streamMeta.getStreamTitle());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-                            @Override
-                            protected void onPreExecute() {
-                                pDialog.setTitle("Conectando...");
-                                pDialog.setMessage("Por favor, espere.");
-                                pDialog.setCancelable(true);
-                                pDialog.setIndeterminate(true);
-
-                                pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (mp.isLooping() || mp.isPlaying()) {
-                                            mp.stop();
-                                            //Cambiar(playBtn,false);
-                                        }
-                                        mp.stop();
-                                        isPlaying = true;
-                                        Cambiar(playBtn, false);
-                                        Toast.makeText(getApplication(), "Se cancelo el servicio", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                                pDialog.show();
-                                Cambiar(playBtn, true);
-                            }
-
-                            @Override
-                            protected Void doInBackground(Void... voids) {
-                                mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                                final String url = "http://66.85.88.174/hot108";
-                                //Stream Manantial
-                                //http://78.129.187.73:4138
-                                // Stream Prueba reproduccion
-                                //http://66.85.88.174/hot108
-                                // Stream Prueba meta data
-                                //http://rs3.radiostreamer.com:14900
-
-                                try {
-                                    mp.setDataSource(url);
-                                    mp.prepare();
-                                    mp.setVolume(50, 50);
-                                    mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                        @Override
-                                        public void onPrepared(MediaPlayer mediaPlayer) {
-                                            mp.start();
-                                            //pDialog.dismiss();
-                                            try {
-                                                Timer timer = new Timer();
-                                                MyTimerTask task = new MyTimerTask();
-                                                timer.schedule(task, 100, 10000);
-                                                CurrentSong.setText(streamMeta.getStreamTitle());
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                            isPlaying = false;
-                                        }
-                                    });
-
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
-                                return null;
-                            }
-
-                            @Override
-                            protected void onPostExecute(Void result) {
-                                if (mp.isPlaying()) {
-                                    pDialog.dismiss();
-                                    try {
-                                        Log.i("Song", streamMeta.getStreamTitle());
-                                        Timer timer = new Timer();
-                                        MyTimerTask task = new MyTimerTask();
-                                        timer.schedule(task, 100, 10000);
-                                        //CurrentSong.setVisibility(View.VISIBLE);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-
-
-                                }
-                            }
-                        };
-
+            public void onClick(View v) {
+                if(!isPlaying){
+                    Cambiar(playBtn,true);
+                    if (initialStage)
+                        new Player()
+                                .execute("http://66.85.88.174/hot108");
+                    else {
                         if (!mp.isPlaying())
-                            task.execute((Void[]) null);
+                            mp.start();
                     }
-                } else {
-                    mp.pause();
-                    isPlaying = true;
-                    Cambiar(playBtn, false);
-                    CurrentSong.setText("");
+                    isPlaying=true;
                 }
-            }
-            else
+                else
                 {
-                  Toast.makeText(getApplicationContext(),"Revise su conexion a internet",Toast.LENGTH_SHORT).show();
+                    Cambiar(playBtn,false);
+                    if(mp.isPlaying()){
+                        mp.pause();
+                        CurrentSong.setText("");
+                    }
+                    isPlaying=false;
                 }
             }
         });
 
+    }
+    class Player extends AsyncTask<String,Void,Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Boolean prepared;
+            try {
+                mp.setDataSource(params[0]);
+                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        initialStage=true;
+                        isPlaying=false;
+                        Cambiar(playBtn,false);
+                        mp.stop();
+                        mp.reset();
+                    }
+                });
+                mp.prepare();
+                prepared=true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                prepared=false;
+            }catch (IllegalArgumentException e)
+            {
+                e.printStackTrace();
+                prepared=false;
+            }
+            return prepared;
+        }
+        @Override
+        protected void onPostExecute(Boolean result){
+            super.onPostExecute(result);
+            if (pDialog.isShowing()){
+                pDialog.cancel();
+            }
+            mp.start();
+            initialStage=false;
+            try {
+                Log.i("Song", streamMeta.getStreamTitle());
+                Timer timer = new Timer();
+                MyTimerTask task = new MyTimerTask();
+                timer.schedule(task, 100, 10000);
+                //CurrentSong.setVisibility(View.VISIBLE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        public Player(){
+            pDialog = new ProgressDialog(MainActivity.this);
+        }
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            pDialog.setMessage("Obteniendo Streaming...");
+            pDialog.show();
+        }
     }
     private boolean isOnline()
     {
@@ -352,9 +316,18 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+    //Funcion para cancelar ProgressDialog de la radio despues de n tiempo
+    public void timerDelayRemoveDialog(long time, final Dialog d){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Toast.makeText(getApplication(), "La solicitud excedio el tiempo, por favor intente mas tarde", Toast.LENGTH_LONG).show();
+                d.dismiss();
+            }
+        }, time);
+    }
     public  void obtenerAlbumArt(String term){
         AlbumArtService albumArtService = retrofitAlbum.create(AlbumArtService.class);
-        //Call<List<Post>> Call = service.getAllPost("true", page);
         final Call<AlbumArtRespuesta> respuesta =albumArtService.getAlbumArt(term,1);
         respuesta.enqueue(new Callback<AlbumArtRespuesta>() {
             @Override
@@ -398,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     protected class MetadataTask2 extends AsyncTask<URL, Void, IcyStreamMeta>
