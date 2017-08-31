@@ -51,6 +51,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import org.json.JSONArray;
@@ -226,10 +227,10 @@ public class NewsActivity extends AppCompatActivity{
 
             //UrlBase
             //http://hashtag.breakstudio.co/api/
-
+            Gson gson = new GsonBuilder().setLenient().create();
             retrofit = new Retrofit.Builder()
                     .baseUrl("http://hashtag.breakstudio.co/wp-json/")
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
             ///getArrayPost();
             //aptoParaCargar=true;
@@ -271,37 +272,7 @@ public class NewsActivity extends AppCompatActivity{
 
 
         private void obtenerDatos() {
-      /*      PostService service = retrofit.create(PostService.class);
-            Call<PostRespuesta> postRespuestaCall = service.getPost();
-            postRespuestaCall.enqueue(new Callback<PostRespuesta>() {
-                @Override
-                public void onResponse(Call<PostRespuesta> call, retrofit2.Response<PostRespuesta> response) {
-                    if(response.isSuccessful()){
-                        lvPost = (ListView)findViewById(R.id.lvNews);
-                        PostRespuesta postRespuesta = response.body();
-                        PostRespuesta listaPosts = (PostRespuesta) postRespuesta.getPosts();
-                        rvAdapter = new RecyclerViewAdapter(getApplicationContext(), (List<Post>) listaPosts);
-                        recyclerView.setAdapter(rvAdapter);
-                        adapter = new PostListAdapter(getApplicationContext(),(List<Post>) listaPosts);
-                        lvPost.setAdapter(adapter);
 
-                        //Configura el alto del Listview lvNews dinamicamente segun el numero de items en el listado
-                        //LayoutParams lp = (LayoutParams) lvPost.getLayoutParams();
-                        //dpToPx convierte el alto 110dp a la cantidad en pixeles para tener un renderizado correcto
-                        //lp.height = listaPosts.size()*dpToPx(110);
-                        //Aplica el nuevo layout del Listview
-                        //lvPost.setLayoutParams(lp);
-
-                    }else{
-                        Log.e(TAG,"onResponse Error"+response.errorBody());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<PostRespuesta> call, Throwable t) {
-                    Log.e(TAG,"onResponse Error"+t.getCause());
-                }
-            });*/
       PostService service = retrofit.create(PostService.class);
             Call<List<Post>> Call = service.getPost();
             Call.enqueue(new Callback<List<Post>>() {
@@ -324,7 +295,7 @@ public class NewsActivity extends AppCompatActivity{
 
                 @Override
                 public void onFailure(Call<List<Post>> call, Throwable t) {
-                    Log.e(TAG,"TodoMal: "+ t.getCause());
+                    Log.e(TAG,"TodoMal: "+ t.getMessage());
                 }
             });
 
