@@ -91,6 +91,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 //Toast.makeText(context,"click"+ pos,Toast.LENGTH_SHORT).show();
                 String Id = lista.get(pos).getId();
                 String Conntent = lista.get(pos).getContent();
+
                 Intent  intent = new Intent(context,DetalleNoticia.class);
                 Bundle bundle=new Bundle();
                 bundle.putString("Title", lista.get(pos).getTitle());

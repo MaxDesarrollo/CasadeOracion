@@ -170,6 +170,24 @@
         android:layout_alignStart="@+id/lvCanciones"
         android:layout_alignEnd="@+id/lvCanciones" />
 
+    <Button
+        android:text="Biblia"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnBiblia"
+        android:textColor="#FFF"
+        android:onClick="irBiblia"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/button_bg_transparent"
+        android:drawableLeft="@drawable/bibleiconwhite_1x"
+        android:paddingLeft="20dp"
+        android:layout_below="@+id/btnIrNews"
+        android:layout_alignStart="@+id/btnIrNews"
+        android:layout_alignEnd="@+id/btnIrNews" />
+
 
 
 </RelativeLayout>

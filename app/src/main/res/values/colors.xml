@@ -8,8 +8,10 @@
     <color name="fabBack">#0078a0</color>
     <color name="fabMenu">#ffffff</color>
     <color name="blackText">#000</color>
+    <color name="gridCap">#2196F3</color>
 
     <color name="lighterGray">#f5f5f5</color>
     <color name="lightGray">#efefef</color>
     <color name="placeholderGray">#dcdcdc</color>
+    <color name="navBible">#FFCA28</color>
 </resources>

@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private String urlArt="";
     private String pivote="";
     private ImageView albumView;
+    Button btnBiblia;
 
     ImageView imageViewFondo;
 
@@ -112,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
         String streamUrl = "http://66.85.88.174/hot108";
         imageViewFondo = (ImageView) findViewById(R.id.imageViewFondo);
         albumView = (ImageView) findViewById(R.id.albumView);
+        btnBiblia = (Button) findViewById(R.id.btnBiblia);
+
+
 
         //String streamUrl = "http://78.129.187.73:4138";
 
@@ -514,6 +519,8 @@ public class MainActivity extends AppCompatActivity {
         shareIntent.setType("text/plain");
         startActivity(shareIntent);
     }
+
+
     public void goNews(View view) {
         Intent intent = new Intent(this,NewsActivity.class);
         startActivity(intent);
@@ -526,6 +533,11 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         goLoginScreen();
 
+    }
+
+    public void irBiblia(View view){
+        Intent intent = new Intent(this,BibliaActivity.class);
+        startActivity(intent);
     }
 
 

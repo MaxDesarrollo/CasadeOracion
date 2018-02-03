@@ -4,9 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--<service android:name=".MyFirebaseMessagingService">
+
+    <!--
+    <service android:name=".MyFirebaseMessagingService">
         <intent-filter>
             <action android:name="com.google.firebase.MESSAGING_EVENT" />
         </intent-filter>
@@ -15,8 +17,8 @@
         <intent-filter>
             <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
         </intent-filter>
-    </service>-->
-
+    </service>
+    -->
     <application
         android:name=".CasadeOracionApp"
         android:allowBackup="true"
@@ -62,7 +64,8 @@
         <activity android:name=".PredicaActivity" />
         <activity android:name=".Video2Activity" />
         <activity android:name=".CalendarioActivity" />
-        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".SettingsActivity" />
+
         <service android:name=".BackgroundAudioService">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
@@ -78,8 +81,7 @@
             </intent-filter>
         </receiver>
 
-
-
+        <activity android:name=".BibliaActivity"></activity>
     </application>
 
 </manifest>

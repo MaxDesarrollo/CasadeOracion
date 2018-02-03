@@ -521,6 +521,8 @@ public class NewsActivity extends AppCompatActivity{
 
                 rvDestacados.setVisibility(View.GONE);
                 tituloListado.setText("PREDICAS DESCARGABLES");
+
+
                 break;
             case "filtroVideos":
                 tituloDestacados.setVisibility(View.GONE);
